@@ -1,0 +1,9 @@
+# Exclude compiled .js files and build directory
+*.js
+build/
+
+# Exclude dependencies
+node_modules/
+
+# secret environment stuf
+environment.ts

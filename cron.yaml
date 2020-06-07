@@ -1,0 +1,4 @@
+cron:
+- description: 'daily stats'
+  url: /
+  schedule: every day 00:00
