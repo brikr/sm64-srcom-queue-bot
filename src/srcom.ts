@@ -3,7 +3,8 @@ import * as moment from 'moment';
 import {Moment} from 'moment';
 
 const API_BASE = 'https://www.speedrun.com/api/v1';
-const SUPER_MARIO_64 = 'o1y9wo6q';
+export const SUPER_MARIO_64 = 'o1y9wo6q';
+export const SUPER_MARIO_64_MEMES = 'o1ymwk1q';
 
 interface ApiRuns {
   data: {
@@ -42,7 +43,9 @@ export interface ExaminedRun extends Run {
 }
 
 // Get all runs currently in the queue
-export async function getAllUnverifiedRuns(): Promise<Run[]> {
+export async function getAllUnverifiedRuns(
+  game: string = SUPER_MARIO_64
+): Promise<Run[]> {
   const runs = [];
   let offset = 0;
   let size = 200;
@@ -51,7 +54,7 @@ export async function getAllUnverifiedRuns(): Promise<Run[]> {
     try {
       const response = await axios.get<ApiRuns>(`${API_BASE}/runs`, {
         params: {
-          game: SUPER_MARIO_64,
+          game,
           status: 'new',
           // Pagination params
           max: 200,
@@ -82,7 +85,9 @@ export async function getAllUnverifiedRuns(): Promise<Run[]> {
 }
 
 // Get all runs examined within the past 24 hours
-export async function getRecentlyExaminedRuns(): Promise<ExaminedRun[]> {
+export async function getRecentlyExaminedRuns(
+  game: string = SUPER_MARIO_64
+): Promise<ExaminedRun[]> {
   const runs = [];
   const minDate = moment().subtract(24, 'h');
   for (const status of ['verified', 'rejected']) {
@@ -93,7 +98,7 @@ export async function getRecentlyExaminedRuns(): Promise<ExaminedRun[]> {
       try {
         const response = await axios.get<ApiRuns>(`${API_BASE}/runs`, {
           params: {
-            game: SUPER_MARIO_64,
+            game,
             status,
             // Order params
             orderby: status === 'verified' ? 'verify-date' : 'submitted',
