@@ -3,7 +3,7 @@ import {sendStatsToDiscord} from './discord';
 
 const app = express();
 
-app.get('/', async (_req, res) => {
+app.get('/daily_stats', async (_req, res) => {
   await sendStatsToDiscord();
   res.sendStatus(200);
 });
