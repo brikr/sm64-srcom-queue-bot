@@ -1,6 +1,6 @@
 cron:
 - description: 'daily stats'
   url: /
-  schedule: every 12 hours synchronized
+  schedule: every 24 hours synchronized
   retry_parameters:
     max_doublings: 0
