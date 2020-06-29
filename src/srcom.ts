@@ -46,12 +46,14 @@ export interface ExaminedRun extends Run {
 export async function getAllUnverifiedRuns(
   game: string = SUPER_MARIO_64
 ): Promise<Run[]> {
+  console.debug(`Getting all unverified runs for ${game}`);
   const runs = [];
   let offset = 0;
   let size = 200;
   while (size === 200) {
     // Continue getting runs until we receive fewer than the amount we requested, meaning we hit the last page.
     try {
+      console.debug(`GET /runs  offset=${offset}`);
       const response = await axios.get<ApiRuns>(`${API_BASE}/runs`, {
         params: {
           game,
@@ -88,6 +90,7 @@ export async function getAllUnverifiedRuns(
 export async function getRecentlyExaminedRuns(
   game: string = SUPER_MARIO_64
 ): Promise<ExaminedRun[]> {
+  console.debug(`Getting all recently verified runs for ${game}`);
   const runs = [];
   const minDate = moment().subtract(24, 'h');
   for (const status of ['verified', 'rejected']) {
@@ -96,6 +99,7 @@ export async function getRecentlyExaminedRuns(
     while (size === 200) {
       // Continue getting runs until we receive fewer than the amount we requested, meaning we hit the last page.
       try {
+        console.debug(`GET /runs  offset=${offset}`);
         const response = await axios.get<ApiRuns>(`${API_BASE}/runs`, {
           params: {
             game,

@@ -65,9 +65,11 @@ export async function sendStatsToDiscord() {
   embed.setTimestamp();
 
   try {
+    console.debug('Sending message to Discord');
     await webhookClient.send({
       embeds: [embed],
     });
+    console.debug('Message sent to Discord');
   } catch (e) {
     console.error(e);
     throw e;
