@@ -13,11 +13,15 @@ jobs:
             - run: npm run create-environment
             - run: npm run check
             - run: npm run gcp-build
+            - persist_to_workspace:
+                root: ~/
+                paths: project
   deploy:
     docker:
       - image: google/cloud-sdk
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
