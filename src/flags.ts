@@ -39,10 +39,7 @@ function platformMismatchFlag(run: Run): RunFlag | undefined {
   switch (run.platform.custom.platform) {
     case 'N64':
       // Submitted to N64 leaderborad. Speedrun.com platform should be N64, not emulated
-      if (
-        run.platform.srcom.platform !== 'N64' ||
-        run.platform.srcom.emulated
-      ) {
+      if (run.platform.srcom.platform !== 'N64' || run.platform.srcom.emulated) {
         return 'PLATFORM_MISMATCH';
       }
       break;
@@ -54,10 +51,7 @@ function platformMismatchFlag(run: Run): RunFlag | undefined {
       break;
     case 'EMU':
       // Submitted to EMU leaderboard. Speedrun.com platform should be N64, emulated
-      if (
-        run.platform.srcom.platform !== 'N64' ||
-        !run.platform.srcom.emulated
-      ) {
+      if (run.platform.srcom.platform !== 'N64' || !run.platform.srcom.emulated) {
         return 'PLATFORM_MISMATCH';
       }
   }
@@ -72,11 +66,7 @@ export function getFlags(run: Run): RunFlag[] {
     return [];
   }
 
-  console.debug(
-    `Calculating flags for ${run.id} (${run.time.humanize()} ${
-      run.category
-    } run)`
-  );
+  console.debug(`Calculating flags for ${run.id} (${run.time.humanize()} ${run.category} run)`);
 
   const flags = flagChecks.reduce<RunFlag[]>((acc, checkFlag) => {
     const flag = checkFlag(run);

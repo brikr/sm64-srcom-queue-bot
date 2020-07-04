@@ -3,10 +3,7 @@
 
 import {writeFileSync} from 'fs';
 
-function createEnvironmentFile(
-  webhookChannelId: string,
-  webhookSecret: string
-) {
+function createEnvironmentFile(webhookChannelId: string, webhookSecret: string) {
   const content = `
     export const environment = {
       webhookChannelId: '${webhookChannelId}',
