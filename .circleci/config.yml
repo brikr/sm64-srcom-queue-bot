@@ -35,6 +35,6 @@ workflows:
         - deploy:
             requires:
               - build-and-lint
-            # filters:
-            #   branches:
-            #     only: master
+            filters:
+              branches:
+                only: master
