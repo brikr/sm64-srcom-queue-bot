@@ -23,7 +23,8 @@
     "gcp-build": "tsc",
     "deploy": "gcloud app deploy",
     "check": "gts check",
-    "fix": "gts fix"
+    "fix": "gts fix",
+    "create-environment": "ts-node -O '{\"module\": \"commonjs\"}' src/build/create-environment.ts"
   },
   "dependencies": {
     "@types/express": "^4.17.6",
@@ -35,5 +36,8 @@
     "gts": "^2.0.2",
     "moment": "^2.26.0",
     "typescript": "^3.9.5"
+  },
+  "devDependencies": {
+    "ts-node": "^8.10.2"
   }
 }
