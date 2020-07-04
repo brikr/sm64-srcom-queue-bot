@@ -1,6 +1,6 @@
 import {MessageEmbed, WebhookClient} from 'discord.js';
 
-import {environment} from './environment';
+import {environment} from './environment/environment';
 import {ExaminedRun, Run} from './srcom';
 import {FLAG_TITLES} from './flags';
 
