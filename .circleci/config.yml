@@ -14,8 +14,8 @@ jobs:
             - run: npm run check
             - run: npm run gcp-build
             - persist_to_workspace:
-                root: ~/
-                paths: project
+                root: ~/project
+                paths: *
   deploy:
     docker:
       - image: google/cloud-sdk
