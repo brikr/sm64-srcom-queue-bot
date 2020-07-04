@@ -4,10 +4,7 @@ import {environment} from './environment/environment';
 import {ExaminedRun, Run} from './srcom';
 import {FLAG_TITLES} from './flags';
 
-const webhookClient = new WebhookClient(
-  environment.webhookChannelId,
-  environment.webhookSecret
-);
+const webhookClient = new WebhookClient(environment.webhookChannelId, environment.webhookSecret);
 
 interface DailyStatsParams {
   sm64Unverified: Run[];
@@ -17,12 +14,7 @@ interface DailyStatsParams {
 }
 
 export async function sendDailyStatsToDiscord(params: DailyStatsParams) {
-  const {
-    sm64Unverified,
-    memesUnverified,
-    sm64RecentlyExamined,
-    memesRecentlyExamined,
-  } = params;
+  const {sm64Unverified, memesUnverified, sm64RecentlyExamined, memesRecentlyExamined} = params;
 
   // Convert both recently examined sets to a "leaderboard" of examiners
   const runsExaminedByUser: {[key: string]: number} = {};
@@ -37,12 +29,8 @@ export async function sendDailyStatsToDiscord(params: DailyStatsParams) {
   sm64RecentlyExamined.forEach(addToRunsExaminedByUser);
   memesRecentlyExamined.forEach(addToRunsExaminedByUser);
 
-  const runsExaminedByUserSorted = Object.entries(runsExaminedByUser).sort(
-    (a, b) => b[1] - a[1]
-  );
-  const runsExaminedByUserValues = runsExaminedByUserSorted.map(
-    ([name, count]) => `${name}: ${count}`
-  );
+  const runsExaminedByUserSorted = Object.entries(runsExaminedByUser).sort((a, b) => b[1] - a[1]);
+  const runsExaminedByUserValues = runsExaminedByUserSorted.map(([name, count]) => `${name}: ${count}`);
 
   // Send message to Discord
   const embed = new MessageEmbed({

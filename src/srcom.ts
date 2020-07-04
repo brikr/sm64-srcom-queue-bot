@@ -118,9 +118,7 @@ function mapApiRun(apiRun: ApiRun): Run {
 }
 
 // Get all runs currently in the queue
-export async function getAllUnverifiedRuns(
-  game: string = SUPER_MARIO_64
-): Promise<Run[]> {
+export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promise<Run[]> {
   console.debug(`Getting all unverified runs for ${game}`);
   const runs = [];
   let offset = 0;
@@ -159,9 +157,7 @@ export async function getAllUnverifiedRuns(
 }
 
 // Get all runs examined within the past 24 hours
-export async function getRecentlyExaminedRuns(
-  game: string = SUPER_MARIO_64
-): Promise<ExaminedRun[]> {
+export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Promise<ExaminedRun[]> {
   console.debug(`Getting all recently verified runs for ${game}`);
   const runs = [];
   const minDate = moment().subtract(24, 'h');
@@ -188,10 +184,7 @@ export async function getRecentlyExaminedRuns(
         // Go through runs in this response and add all that are after the minimum date
         let exit = false;
         for (const apiRun of response.data.data) {
-          const runDate =
-            status === 'verified'
-              ? moment(apiRun.status['verify-date'])
-              : moment(apiRun.submitted);
+          const runDate = status === 'verified' ? moment(apiRun.status['verify-date']) : moment(apiRun.submitted);
           if (runDate.isAfter(minDate)) {
             const run = mapApiRun(apiRun);
             runs.push({
