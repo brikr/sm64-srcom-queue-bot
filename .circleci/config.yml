@@ -13,7 +13,23 @@ jobs:
             - run: npm run create-environment
             - run: npm run check
             - run: npm run gcp-build
+  deploy:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      - run: gcloud app deploy
+      - run: gcloud app deploy cron.yaml
 workflows:
-    build-and-lint:
+    build-lint-deploy:
       jobs:
         - build-and-lint
+        - deploy:
+            requires:
+              - build-and-lint
+            # filters:
+            #   branches:
+            #     only: master
