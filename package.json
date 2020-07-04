@@ -17,7 +17,6 @@
     "node": "12.x.x"
   },
   "scripts": {
-    "prepare": "npm run gcp-build",
     "lint": "tslint -p .",
     "start": "node build/index.js",
     "dev": "npm run gcp-build && npm run start",
