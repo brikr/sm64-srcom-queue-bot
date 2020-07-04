@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
 jobs:
-  build:
+  build-and-lint:
     executor:
       name: node/default
     steps:
@@ -12,6 +12,6 @@ jobs:
             - run: npm install
             - run: npm run gcp-build
 workflows:
-    build:
+    build-and-lint:
       jobs:
-        - build
+        - build-and-lint

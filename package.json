@@ -23,7 +23,6 @@
     "gcp-build": "tsc",
     "deploy": "gcloud app deploy",
     "check": "gts check",
-    "clean": "gts clean",
     "fix": "gts fix"
   },
   "dependencies": {
