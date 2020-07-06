@@ -12,7 +12,7 @@ const SHOUTOUT_TIMES = {
   '70': moment.duration({minutes: 51}).asMilliseconds(),
   '16': moment.duration({minutes: 16}).asMilliseconds(),
   '1': moment.duration({minutes: 8}).asMilliseconds(),
-  '0': moment.duration({minutes: 8}).asMilliseconds(),
+  '0': moment.duration({minutes: 7}).asMilliseconds(),
 };
 
 function shoutoutFlag(run: Run): RunFlag | undefined {
