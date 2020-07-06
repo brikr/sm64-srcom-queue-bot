@@ -1,5 +1,6 @@
 import {Run, RunFlag} from './srcom';
 import * as moment from 'moment';
+import {formatDuration} from './util';
 
 export const FLAG_TITLES = {
   MS: 'Has milliseconds',
@@ -7,17 +8,15 @@ export const FLAG_TITLES = {
   PLATFORM_MISMATCH: 'Platform mismatch',
 };
 
-const SHOUTOUT_TIMES = {
+const SHOUTOUT_TIMES: {[key: string]: number} = {
   '120': moment.duration({hours: 1, minutes: 50}).asMilliseconds(),
   '70': moment.duration({minutes: 51}).asMilliseconds(),
   '16': moment.duration({minutes: 16}).asMilliseconds(),
-  '1': moment.duration({minutes: 8}).asMilliseconds(),
-  '0': moment.duration({minutes: 8}).asMilliseconds(),
 };
 
 function shoutoutFlag(run: Run): RunFlag | undefined {
-  if (run.category === 'MEME') {
-    // Nobody gives a shit
+  if (SHOUTOUT_TIMES[run.category] === undefined) {
+    // Not reporting shoutouts for this category
     return undefined;
   }
 
@@ -66,7 +65,7 @@ export function getFlags(run: Run): RunFlag[] {
     return [];
   }
 
-  console.debug(`Calculating flags for ${run.id} (${run.time.humanize()} ${run.category} run)`);
+  console.debug(`Calculating flags for ${run.id} (${run.category} star in ${formatDuration(run.time)})`);
 
   const flags = flagChecks.reduce<RunFlag[]>((acc, checkFlag) => {
     const flag = checkFlag(run);
