@@ -2,62 +2,82 @@ import {Run, RunFlag} from './srcom';
 import * as moment from 'moment';
 import {formatDuration} from './util';
 
-export const FLAG_TITLES = {
-  MS: 'Has milliseconds',
-  SHOUTOUT: 'Shoutout worthy',
-  PLATFORM_MISMATCH: 'Platform mismatch',
-};
-
-const SHOUTOUT_TIMES: {[key: string]: number} = {
-  '120': moment.duration({hours: 1, minutes: 50}).asMilliseconds(),
-  '70': moment.duration({minutes: 51}).asMilliseconds(),
-  '16': moment.duration({minutes: 16}).asMilliseconds(),
-};
-
-function shoutoutFlag(run: Run): RunFlag | undefined {
-  if (SHOUTOUT_TIMES[run.category] === undefined) {
-    // Not reporting shoutouts for this category
-    return undefined;
-  }
-
-  const asMs = run.time.asMilliseconds();
-  if (asMs < SHOUTOUT_TIMES[run.category]) {
-    return 'SHOUTOUT';
-  }
-  return undefined;
+interface Flag {
+  code: RunFlag;
+  title: string;
+  check: (run: Run) => boolean;
+  reject: boolean;
+  rejectMessage?: string;
 }
 
-function msFlag(run: Run): RunFlag | undefined {
-  if (run.time.milliseconds() !== 0) {
-    return 'MS';
-  }
-  return undefined;
-}
+const FLAGS: Flag[] = [
+  {
+    code: 'MS',
+    title: 'Has milliseconds',
+    check: run => {
+      // TODO: do not flag if they are below a certain time
+      if (run.time.milliseconds() !== 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    reject: true,
+    rejectMessage: 'Do not include milliseconds in submissions.',
+  },
+  {
+    code: 'SHOUTOUT',
+    title: 'Shoutout worthy',
+    check: run => {
+      const shoutoutTimes: {[key: string]: number} = {
+        '120': moment.duration({hours: 1, minutes: 50}).asMilliseconds(),
+        '70': moment.duration({minutes: 51}).asMilliseconds(),
+        '16': moment.duration({minutes: 16}).asMilliseconds(),
+      };
 
-function platformMismatchFlag(run: Run): RunFlag | undefined {
-  switch (run.platform.custom.platform) {
-    case 'N64':
-      // Submitted to N64 leaderborad. Speedrun.com platform should be N64, not emulated
-      if (run.platform.srcom.platform !== 'N64' || run.platform.srcom.emulated) {
-        return 'PLATFORM_MISMATCH';
+      if (shoutoutTimes[run.category] === undefined) {
+        // Not reporting shoutouts for this category
+        return false;
       }
-      break;
-    case 'VC':
-      // Submitted to VC leaderboard. Speedrun.com platform should be VC, not emulated
-      if (run.platform.srcom.platform !== 'VC' || run.platform.srcom.emulated) {
-        return 'PLATFORM_MISMATCH';
-      }
-      break;
-    case 'EMU':
-      // Submitted to EMU leaderboard. Speedrun.com platform should be N64, emulated
-      if (run.platform.srcom.platform !== 'N64' || !run.platform.srcom.emulated) {
-        return 'PLATFORM_MISMATCH';
-      }
-  }
-  return undefined;
-}
 
-const flagChecks = [shoutoutFlag, msFlag, platformMismatchFlag];
+      const asMs = run.time.asMilliseconds();
+      if (asMs < shoutoutTimes[run.category]) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    reject: false,
+  },
+  {
+    code: 'PLATFORM_MISMATCH',
+    title: 'Platform mismatch',
+    check: run => {
+      switch (run.platform.custom.platform) {
+        case 'N64':
+          // Submitted to N64 leaderborad. Speedrun.com platform should be N64, not emulated
+          if (run.platform.srcom.platform !== 'N64' || run.platform.srcom.emulated) {
+            return true;
+          }
+          break;
+        case 'VC':
+          // Submitted to VC leaderboard. Speedrun.com platform should be VC, not emulated
+          if (run.platform.srcom.platform !== 'VC' || run.platform.srcom.emulated) {
+            return true;
+          }
+          break;
+        case 'EMU':
+          // Submitted to EMU leaderboard. Speedrun.com platform should be N64, emulated
+          if (run.platform.srcom.platform !== 'N64' || !run.platform.srcom.emulated) {
+            return true;
+          }
+      }
+      return false;
+    },
+    reject: true,
+    rejectMessage: 'Platform fields do not match.',
+  },
+];
 
 export function getFlags(run: Run): RunFlag[] {
   if (run.status === 'rejected') {
@@ -67,10 +87,9 @@ export function getFlags(run: Run): RunFlag[] {
 
   console.debug(`Calculating flags for ${run.id} (${run.category} star in ${formatDuration(run.time)})`);
 
-  const flags = flagChecks.reduce<RunFlag[]>((acc, checkFlag) => {
-    const flag = checkFlag(run);
-    if (flag !== undefined) {
-      acc.push(flag);
+  const flags = FLAGS.reduce<RunFlag[]>((acc, flag) => {
+    if (flag.check(run)) {
+      acc.push(flag.code);
     }
     return acc;
   }, []);
