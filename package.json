@@ -19,7 +19,7 @@
   "scripts": {
     "lint": "tslint -p .",
     "start": "node build/index.js",
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev --watch src/ src/index.ts",
     "gcp-build": "tsc",
     "deploy": "gcloud app deploy",
     "check": "gts check",
