@@ -4,3 +4,9 @@ cron:
   schedule: every 24 hours synchronized
   retry_parameters:
     max_doublings: 0
+
+- description: 'auto reject runs'
+  url: /review_runs
+  schedule: every 30 minutes synchronized
+  retry_parameters:
+    max_doublings: 0
