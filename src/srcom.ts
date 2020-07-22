@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as moment from 'moment';
 import {Moment, Duration} from 'moment';
-import {getFlags} from './flags';
+import {getFlags, Flag} from './flags';
 
 interface ApiRun {
   id: string;
@@ -42,7 +42,6 @@ interface ApiUser {
 }
 
 export type Category = '120' | '70' | '16' | '1' | '0' | 'MEME';
-export type RunFlag = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH';
 export type Platform = 'N64' | 'VC' | 'EMU';
 
 export interface Run {
@@ -62,7 +61,7 @@ export interface Run {
       platform: Platform;
     };
   };
-  flags?: RunFlag[];
+  flags: Flag[];
 }
 
 export interface ExaminedRun extends Run {
@@ -111,6 +110,7 @@ function mapApiRun(apiRun: ApiRun): Run {
         platform: PLATFORMS[apiRun.values[PLATFORM_VARIABLE_ID]] as Platform,
       },
     },
+    flags: [],
   };
   run.flags = getFlags(run);
 

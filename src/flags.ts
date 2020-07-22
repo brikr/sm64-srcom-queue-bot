@@ -1,9 +1,11 @@
-import {Run, RunFlag} from './srcom';
 import * as moment from 'moment';
 import {formatDuration} from './util';
+import {Run} from './srcom';
 
-interface Flag {
-  code: RunFlag;
+type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH';
+
+export interface Flag {
+  code: FlagCode;
   title: string;
   check: (run: Run) => boolean;
   reject: boolean;
@@ -36,7 +38,7 @@ const FLAGS: Flag[] = [
       }
     },
     reject: true,
-    rejectMessage: 'Do not include milliseconds in submissions.',
+    rejectMessage: 'Milliseconds are in the run time.',
   },
   {
     code: 'SHOUTOUT',
@@ -88,11 +90,11 @@ const FLAGS: Flag[] = [
       return false;
     },
     reject: true,
-    rejectMessage: 'Platform fields do not match.',
+    rejectMessage: 'Unsupported combination of Platform fields and Emulator checkbox.',
   },
 ];
 
-export function getFlags(run: Run): RunFlag[] {
+export function getFlags(run: Run): Flag[] {
   if (run.status === 'rejected') {
     // Don't flag rejected runs
     return [];
@@ -100,9 +102,9 @@ export function getFlags(run: Run): RunFlag[] {
 
   console.debug(`Calculating flags for ${run.id} (${run.category} star in ${formatDuration(run.time)})`);
 
-  const flags = FLAGS.reduce<RunFlag[]>((acc, flag) => {
+  const flags = FLAGS.reduce<Flag[]>((acc, flag) => {
     if (flag.check(run)) {
-      acc.push(flag.code);
+      acc.push(flag);
     }
     return acc;
   }, []);
