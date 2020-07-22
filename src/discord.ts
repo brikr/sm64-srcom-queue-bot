@@ -2,8 +2,7 @@ import {MessageEmbed, WebhookClient} from 'discord.js';
 
 import {environment} from './environment/environment';
 import {ExaminedRun, Run} from './srcom';
-import {FLAG_TITLES} from './flags';
-import {formatDuration} from './util';
+import {formatDuration, runToString} from './util';
 
 const webhookClient = new WebhookClient(environment.webhookChannelId, environment.webhookSecret);
 
@@ -77,11 +76,11 @@ export async function sendFlaggedRunsToDiscord(params: FlaggedRunsParams) {
   const embeds: MessageEmbed[] = [];
 
   for (const run of sm64RecentlyExamined) {
-    if (run.flags && run.flags.length > 0) {
-      const flagTitles = run.flags.map(flag => FLAG_TITLES[flag]);
+    if (run.flags.length > 0) {
+      const flagTitles = run.flags.map(flag => flag.title);
       embeds.push(
         new MessageEmbed({
-          title: `Flagged run: ${run.category} star in ${formatDuration(run.time)}`,
+          title: `Flagged run: ${runToString(run)}`,
           description: flagTitles.join(', '),
           url: `https://speedrun.com/run/${run.id}`,
         })

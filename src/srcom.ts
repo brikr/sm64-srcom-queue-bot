@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as moment from 'moment';
 import {Moment, Duration} from 'moment';
-import {getFlags} from './flags';
+import {getFlags, Flag} from './flags';
 
 interface ApiRun {
   id: string;
@@ -42,7 +42,6 @@ interface ApiUser {
 }
 
 export type Category = '120' | '70' | '16' | '1' | '0' | 'MEME';
-export type RunFlag = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH';
 export type Platform = 'N64' | 'VC' | 'EMU';
 
 export interface Run {
@@ -62,7 +61,8 @@ export interface Run {
       platform: Platform;
     };
   };
-  flags?: RunFlag[];
+  verified: boolean;
+  flags: Flag[];
 }
 
 export interface ExaminedRun extends Run {
@@ -76,6 +76,7 @@ const API_BASE = 'https://www.speedrun.com/api/v1';
 export const SUPER_MARIO_64 = 'o1y9wo6q';
 export const SUPER_MARIO_64_MEMES = 'o1ymwk1q';
 const PLATFORM_VARIABLE_ID = 'e8m7em86';
+const VERIFIED_VARIABLE_ID = 'kn04ewol';
 /* eslint-disable prettier/prettier */
 const CATEGORIES: {[key: string]: Category} = {
   'wkpoo02r': '120',
@@ -94,6 +95,10 @@ const PLATFORMS: {[key: string]: string} = {
   'jq6540ol': 'VC',
   '5lmoxk01': 'EMU',
 };
+const VERIFIED_VALUES: {[key: string]: boolean} = {
+  '5q8e86rq': true,
+  '4qyxop3l': false,
+};
 /* eslint-enable */
 
 function mapApiRun(apiRun: ApiRun): Run {
@@ -111,6 +116,8 @@ function mapApiRun(apiRun: ApiRun): Run {
         platform: PLATFORMS[apiRun.values[PLATFORM_VARIABLE_ID]] as Platform,
       },
     },
+    verified: VERIFIED_VALUES[apiRun.values[VERIFIED_VARIABLE_ID]],
+    flags: [],
   };
   run.flags = getFlags(run);
 

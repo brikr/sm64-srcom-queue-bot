@@ -1,4 +1,5 @@
 import {Duration} from 'moment';
+import {Run} from './srcom';
 
 /**
  * Converts moment duration to H:MM:SS or MM:SS format
@@ -16,4 +17,12 @@ export function formatDuration(duration: Duration) {
   } else {
     return `${minutes}:${seconds}`;
   }
+}
+
+/**
+ * Readable string from run
+ * @param run
+ */
+export function runToString(run: Run) {
+  return `${run.category} star in ${formatDuration(run.time)}`;
 }
