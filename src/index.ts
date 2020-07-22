@@ -51,6 +51,7 @@ app.get('/review_runs', async (_req, res) => {
           message: `Would have rejected ${runToString(run)}`,
           reason: rejectionMessage,
           runLink: `https://speedrun.com/run/${run.id}`,
+          run: run,
         })
       );
     }
