@@ -43,7 +43,8 @@ app.get('/review_runs', async (_req, res) => {
       const rejectionMessage =
         'Your run was automatically rejected for the following reason(s): ' +
         rejectReasons.join(' ') +
-        ' Please read the run submission guide on Ukikipedia: https://bthl.es/3s';
+        ' Please read the run submission guide on Ukikipedia: https://bthl.es/3s. ' +
+        'If you think your run was wrongfully rejected, please reach out to a Moderator on Discord.';
 
       console.log(
         JSON.stringify({
