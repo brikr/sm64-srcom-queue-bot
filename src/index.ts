@@ -41,7 +41,7 @@ app.get('/review_runs', async (_req, res) => {
     if (rejectReasons.length > 0) {
       // Make a note of probable rejection and prepare message.
       const rejectionMessage =
-        'Your run was automatically rejected for the following reasons: ' +
+        'Your run was automatically rejected for the following reason(s): ' +
         rejectReasons.join(' ') +
         ' Please read the run submission guide on Ukikipedia: https://bthl.es/3s';
 

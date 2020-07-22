@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {formatDuration} from './util';
 import {Run} from './srcom';
 
-type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH';
+type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED';
 
 export interface Flag {
   code: FlagCode;
@@ -91,6 +91,15 @@ const FLAGS: Flag[] = [
     },
     reject: true,
     rejectMessage: 'Unsupported combination of Platform fields and Emulator checkbox.',
+  },
+  {
+    code: 'BAD_VERIFIED',
+    title: 'Marked as unverified',
+    check: run => {
+      return !run.verified;
+    },
+    reject: true,
+    rejectMessage: 'Verified field should be left as "Yes".',
   },
 ];
 
