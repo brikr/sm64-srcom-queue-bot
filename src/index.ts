@@ -45,12 +45,14 @@ app.get('/review_runs', async (_req, res) => {
         rejectReasons.join(' ') +
         ' Please read the run submission guide on Ukikipedia: https://bthl.es/3s';
 
-      console.log({
-        type: 'rejection',
-        message: `Would have rejected ${runToString(run)}`,
-        reason: rejectionMessage,
-        runLink: `https://speedrun.com/run/${run.id}`,
-      });
+      console.log(
+        JSON.stringify({
+          type: 'rejection',
+          message: `Would have rejected ${runToString(run)}`,
+          reason: rejectionMessage,
+          runLink: `https://speedrun.com/run/${run.id}`,
+        })
+      );
     }
   }
 
