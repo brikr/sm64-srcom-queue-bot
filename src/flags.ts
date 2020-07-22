@@ -15,9 +15,22 @@ const FLAGS: Flag[] = [
     code: 'MS',
     title: 'Has milliseconds',
     check: run => {
-      // TODO: do not flag if they are below a certain time
+      // If a run is below this time for these categories, don't auto-reject for milliseconds
+      const msOkTimes: {[key: string]: number} = {
+        '120': moment.duration({hours: 1, minutes: 39}).asMilliseconds(),
+        '70': moment.duration({minutes: 48}).asMilliseconds(),
+        '16': moment.duration({minutes: 16}).asMilliseconds(),
+        '1': moment.duration({minutes: 7, seconds: 25}).asMilliseconds(),
+        '0': moment.duration({minutes: 7}).asMilliseconds(),
+      };
       if (run.time.milliseconds() !== 0) {
-        return true;
+        const asMs = run.time.asMilliseconds();
+        if (msOkTimes[run.category] !== undefined && asMs < msOkTimes[run.category]) {
+          // ms are allowed here
+          return false;
+        } else {
+          return true;
+        }
       } else {
         return false;
       }
