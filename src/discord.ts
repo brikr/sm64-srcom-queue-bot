@@ -2,7 +2,7 @@ import {MessageEmbed, WebhookClient} from 'discord.js';
 
 import {environment} from './environment/environment';
 import {ExaminedRun, Run} from './srcom';
-import {formatDuration, runToString} from './util';
+import {runToString} from './util';
 
 const webhookClient = new WebhookClient(environment.webhookChannelId, environment.webhookSecret);
 
