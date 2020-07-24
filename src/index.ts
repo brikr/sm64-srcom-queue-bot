@@ -1,7 +1,6 @@
 import * as express from 'express';
 import {sendDailyStatsToDiscord, sendFlaggedRunsToDiscord} from './discord';
-import {getAllUnverifiedRuns, SUPER_MARIO_64, SUPER_MARIO_64_MEMES, getRecentlyExaminedRuns} from './srcom';
-import {runToString} from './util';
+import {getAllUnverifiedRuns, SUPER_MARIO_64, SUPER_MARIO_64_MEMES, getRecentlyExaminedRuns, rejectRun} from './srcom';
 
 const app = express();
 
@@ -41,20 +40,12 @@ app.get('/review_runs', async (_req, res) => {
     if (rejectReasons.length > 0) {
       // Make a note of probable rejection and prepare message.
       const rejectionMessage =
-        'Your run was automatically rejected for the following reason(s): ' +
-        rejectReasons.join(' ') +
-        ' Please read the run submission guide on Ukikipedia: https://bthl.es/3s. ' +
-        'If you think your run was wrongfully rejected, please reach out to a Moderator on Discord.';
+        'Automatically rejected for the following reason(s):\n' +
+        rejectReasons.join('\n') +
+        '\nSubmission guide: https://bthl.es/3s.\n' +
+        'Fix the submission, and then submit again.';
 
-      console.log(
-        JSON.stringify({
-          type: 'rejection',
-          message: `Would have rejected ${runToString(run)}`,
-          reason: rejectionMessage,
-          runLink: `https://speedrun.com/run/${run.id}`,
-          run: run,
-        })
-      );
+      rejectRun(run, rejectionMessage);
     }
   }
 

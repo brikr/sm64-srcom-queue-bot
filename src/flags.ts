@@ -90,7 +90,7 @@ const FLAGS: Flag[] = [
       return false;
     },
     reject: true,
-    rejectMessage: 'Unsupported combination of Platform fields and Emulator checkbox.',
+    rejectMessage: 'Invalid Platform fields.',
   },
   {
     code: 'BAD_VERIFIED',
@@ -99,7 +99,7 @@ const FLAGS: Flag[] = [
       return !run.verified;
     },
     reject: true,
-    rejectMessage: 'Verified field should be left as "Yes".',
+    rejectMessage: 'Verified field should be "Yes".',
   },
 ];
 
