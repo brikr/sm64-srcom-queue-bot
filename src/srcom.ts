@@ -2,6 +2,8 @@ import axios from 'axios';
 import * as moment from 'moment';
 import {Moment, Duration} from 'moment';
 import {getFlags, Flag} from './flags';
+import {environment} from './environment/environment';
+import {runToString} from './util';
 
 interface ApiRun {
   id: string;
@@ -240,4 +242,46 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
     ...run,
     examiner: examiners[run.examiner],
   }));
+}
+
+/**
+ * Reject a run with the provided message
+ */
+export async function rejectRun(run: Run, reason: string) {
+  try {
+    const response = await axios.put(
+      `${API_BASE}/runs/${run.id}/status`,
+      {
+        status: {
+          status: 'rejected',
+          reason,
+        },
+      },
+      {
+        headers: {
+          'x-api-key': environment.srcomApiKey,
+        },
+      }
+    );
+    console.log(
+      JSON.stringify({
+        type: 'rejection',
+        message: `Rejected ${runToString(run)}`,
+        reason,
+        runLink: `https://speedrun.com/run/${run.id}`,
+        run,
+        response: response.data,
+      })
+    );
+  } catch (error) {
+    const errorData = error.response ? error.response : error.message;
+    console.error({
+      type: 'error',
+      message: `Failed to reject run with id ${run.id}`,
+      reason,
+      runLink: `https://speedrun.com/run/${run.id}`,
+      run,
+      error: errorData,
+    });
+  }
 }
