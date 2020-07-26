@@ -6,7 +6,13 @@ const app = express();
 
 // Post a status update about the queue and any approved runs that were flagged.
 // Run daily at midnight UTC
-app.get('/daily_stats', async (_req, res) => {
+app.get('/daily_stats', async (req, res) => {
+  if (req.headers['x-appengine-cron'] === undefined) {
+    console.log('Request is not from GAE cron. Rejecting');
+    res.sendStatus(403);
+    return;
+  }
+
   const sm64Unverified = await getAllUnverifiedRuns(SUPER_MARIO_64);
   const memesUnverified = await getAllUnverifiedRuns(SUPER_MARIO_64_MEMES);
   const sm64RecentlyExamined = await getRecentlyExaminedRuns(SUPER_MARIO_64);
@@ -26,7 +32,13 @@ app.get('/daily_stats', async (_req, res) => {
 
 // Review pending runs and note any of them that could be autorejected due to their flags.
 // Run every 30 minutes
-app.get('/review_runs', async (_req, res) => {
+app.get('/review_runs', async (req, res) => {
+  if (req.headers['x-appengine-cron'] === undefined) {
+    console.log('Request is not from GAE cron. Rejecting');
+    res.sendStatus(403);
+    return;
+  }
+
   const sm64Unverified = await getAllUnverifiedRuns(SUPER_MARIO_64);
 
   for (const run of sm64Unverified) {
