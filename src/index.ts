@@ -1,6 +1,7 @@
 import * as express from 'express';
 import {sendDailyStatsToDiscord, sendFlaggedRunsToDiscord} from './discord';
 import {getAllUnverifiedRuns, SUPER_MARIO_64, SUPER_MARIO_64_MEMES, getRecentlyExaminedRuns, rejectRun} from './srcom';
+import {decodeFlags} from './util';
 
 const app = express();
 
@@ -62,6 +63,12 @@ app.get('/review_runs', async (req, res) => {
   }
 
   res.sendStatus(200);
+});
+
+app.get('/reason', async (req, res) => {
+  const flags = decodeFlags(req.query['f'] as string);
+
+  res.send(flags);
 });
 
 app.listen(8080, () => {

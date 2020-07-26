@@ -6,15 +6,17 @@ type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED';
 
 export interface Flag {
   code: FlagCode;
+  index: number;
   title: string;
   check: (run: Run) => boolean;
   reject: boolean;
   rejectMessage?: string;
 }
 
-const FLAGS: Flag[] = [
+export const FLAGS: Flag[] = [
   {
     code: 'MS',
+    index: 0,
     title: 'Has milliseconds',
     check: run => {
       // If a run is below this time for these categories, don't auto-reject for milliseconds
@@ -42,6 +44,7 @@ const FLAGS: Flag[] = [
   },
   {
     code: 'SHOUTOUT',
+    index: 1,
     title: 'Shoutout worthy',
     check: run => {
       const shoutoutTimes: {[key: string]: number} = {
@@ -66,6 +69,7 @@ const FLAGS: Flag[] = [
   },
   {
     code: 'PLATFORM_MISMATCH',
+    index: 2,
     title: 'Platform mismatch',
     check: run => {
       switch (run.platform.custom.platform) {
@@ -94,6 +98,7 @@ const FLAGS: Flag[] = [
   },
   {
     code: 'BAD_VERIFIED',
+    index: 3,
     title: 'Marked as unverified',
     check: run => {
       return !run.verified;
