@@ -40,7 +40,9 @@ export const FLAGS: Flag[] = [
       }
     },
     reject: true,
-    rejectMessage: 'Milliseconds are in the run time.',
+    rejectMessage:
+      'Milliseconds are in the run time. ' +
+      'Unless your run is a top time in a short category, you should not include milliseconds in your submission.',
   },
   {
     code: 'SHOUTOUT',
@@ -94,7 +96,7 @@ export const FLAGS: Flag[] = [
       return false;
     },
     reject: true,
-    rejectMessage: 'Invalid Platform fields.',
+    rejectMessage: 'Unsupported combination of Platform fields and Emulator checkbox.',
   },
   {
     code: 'BAD_VERIFIED',
