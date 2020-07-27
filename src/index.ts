@@ -133,7 +133,7 @@ app.get('/reason', async (req, res) => {
     <body>
       <div class="root">
         <div class="card" style="">
-          <span>Your run was rejected for the following reasons:</span>
+          <span>Your run was rejected for the following reason(s):</span>
           <ul>
             ${reasonsHtml}
           </ul>
