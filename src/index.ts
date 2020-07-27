@@ -1,7 +1,8 @@
 import * as express from 'express';
 import {sendDailyStatsToDiscord, sendFlaggedRunsToDiscord} from './discord';
 import {getAllUnverifiedRuns, SUPER_MARIO_64, SUPER_MARIO_64_MEMES, getRecentlyExaminedRuns, rejectRun} from './srcom';
-import {decodeFlags} from './util';
+import {decodeFlags, encodeFlags} from './util';
+import {environment} from './environment/environment';
 
 const app = express();
 
@@ -41,24 +42,22 @@ app.get('/review_runs', async (req, res) => {
   }
 
   const sm64Unverified = await getAllUnverifiedRuns(SUPER_MARIO_64);
+  const baseUrl = environment.dev ? 'localhost:8080' : 'https://sm64.dev';
 
   for (const run of sm64Unverified) {
-    const rejectReasons = [];
-    for (const flag of run.flags) {
-      if (flag.reject) {
-        rejectReasons.push(flag.rejectMessage);
-      }
-    }
-
-    if (rejectReasons.length > 0) {
-      // Make a note of probable rejection and prepare message.
+    if (run.flags.filter(f => f.reject).length > 0) {
       const rejectionMessage =
-        'Automatically rejected for the following reason(s):\n' +
-        rejectReasons.join('\n') +
-        '\nSubmission guide: https://bthl.es/3s.\n' +
+        `Rejection reason(s): ${baseUrl}/reason?f=${encodeFlags(run.flags)}\n` +
+        'Submission guide: https://bthl.es/3s\n' +
         'Fix the submission, and then submit again.';
 
-      rejectRun(run, rejectionMessage);
+      if (environment.dev) {
+        console.log('Would have rejected run:');
+        console.log(run);
+        console.log(rejectionMessage);
+      } else {
+        rejectRun(run, rejectionMessage);
+      }
     }
   }
 
@@ -83,6 +82,13 @@ app.get('/reason', async (req, res) => {
 
   const html = `
     <head>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-173627062-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-173627062-1');
+      </script>
       <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
       <style>
         body {
@@ -136,7 +142,7 @@ app.get('/reason', async (req, res) => {
             Review the
             <a href="https://ukikipedia.net/wiki/RTA_Guide/Submitting_Runs_to_Speedrun.com" target="_blank">
               Submitting Runs to Speedrun.com</a>
-            page on Ukikipedia, then correct these fields and re-submit your run.
+            guide, then correct these fields and re-submit your run.
           </span>
           <br>
           <span>
@@ -151,6 +157,9 @@ app.get('/reason', async (req, res) => {
   res.send(html);
 });
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log('listenin');
+  if (environment.dev) {
+    console.log('dev mode is on');
+  }
 });
