@@ -3,8 +3,7 @@ import * as moment from 'moment';
 import {Moment, Duration} from 'moment';
 import {getFlags, Flag} from './flags';
 import {environment} from './environment/environment';
-import {runToString, encodeFlags, decodeFlags} from './util';
-import {decode} from 'punycode';
+import {runToString} from './util';
 
 interface ApiRun {
   id: string;

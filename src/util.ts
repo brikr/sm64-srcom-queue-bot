@@ -51,8 +51,9 @@ export function encodeFlags(flags: Flag[]): string {
 export function decodeFlags(hash: string): Flag[] {
   let num = decode(hash);
 
-  if (num > 1 >> FLAGS.length) {
+  if (num >= 1 << FLAGS.length) {
     // funky number given, maybe someone messing with url params
+    console.debug('decodeFlags: Got weird number. Returning empty array');
     return [];
   }
 
