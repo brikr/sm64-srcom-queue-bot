@@ -9,6 +9,7 @@ function createEnvironmentFile(srcomApiKey: string, webhookChannelId: string, we
       srcomApiKey: '${srcomApiKey}',
       webhookChannelId: '${webhookChannelId}',
       webhookSecret: '${webhookSecret}',
+      dev: false,
     }
   `;
 
