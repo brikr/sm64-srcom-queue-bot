@@ -3,5 +3,8 @@
   "ignorePatterns": [
     "/build/",
     "environment.ts"
-  ]
+  ],
+  "rules": {
+    "no-unused-vars": "error"
+  }
 }
