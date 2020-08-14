@@ -87,5 +87,7 @@ export async function handleQueue(_req: Request, res: Response) {
     </body>
   `;
 
+  // Tell browsers not to cache this page so that we can get fresh API data on every load.
+  res.header('Cache-Control', 'no-store');
   res.send(html);
 }
