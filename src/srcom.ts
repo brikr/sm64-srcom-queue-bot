@@ -51,6 +51,7 @@ export interface Run {
   status: 'new' | 'verified' | 'rejected';
   category: Category;
   time: Duration;
+  submitted: Moment;
   platform: {
     // There are two platform fields on the leaderboard: the speedrun.com specific one that every game has which
     // features platform dropdown  + emulated checkbox, and the SM64 leaderboard specific platforms that are N64, VC,
@@ -109,6 +110,7 @@ function mapApiRun(apiRun: ApiRun): Run {
     status: apiRun.status.status,
     category: CATEGORIES[apiRun.category] || 'MEME',
     time: moment.duration(apiRun.times.realtime),
+    submitted: moment(apiRun.submitted),
     platform: {
       srcom: {
         platform: PLATFORMS[apiRun.system.platform] as Platform,

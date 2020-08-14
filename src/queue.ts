@@ -11,12 +11,14 @@ export async function handleQueue(_req: Request, res: Response) {
       const time = formatDuration(run.time);
       const platform = run.platform.custom.platform;
       const flags = run.flags.map(f => f.title).join(', ');
+      const submitted = run.submitted.fromNow();
       return `
       <tr>
         <td>${category}</td>
         <td><a href="https://speedrun.com/run/${run.id}">${time}</a></td>
         <td>${platform}</td>
         <td>${flags}</td>
+        <td>${submitted}</td>
       </tr>
     `;
     })
@@ -62,6 +64,7 @@ export async function handleQueue(_req: Request, res: Response) {
         th, td {
           border-bottom: 1px solid hsla(0,0%,100%,.12);
           padding: 8px;
+          text-align: left;
         }
       </style>
     </head>
@@ -74,6 +77,7 @@ export async function handleQueue(_req: Request, res: Response) {
             <th>Time</th>
             <th>Platform</th>
             <th>Flags</th>
+            <th>Submitted</th>
           </thead>
           <tbody>
             ${sm64TableRows}
