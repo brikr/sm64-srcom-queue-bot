@@ -23,6 +23,7 @@ interface ApiRun {
   system: {
     platform: string;
     emulated: boolean;
+    region: string;
   };
   values: {[key: string]: string};
 }
@@ -45,6 +46,7 @@ interface ApiUser {
 
 export type Category = '120' | '70' | '16' | '1' | '0' | 'MEME';
 export type Platform = 'N64' | 'VC' | 'EMU';
+export type Region = 'EUR' | 'JPN' | 'USA';
 
 export interface Run {
   id: string;
@@ -64,6 +66,7 @@ export interface Run {
       platform: Platform;
     };
   };
+  region: Region;
   verified: boolean;
   flags: Flag[];
 }
@@ -88,7 +91,7 @@ const CATEGORIES: {[key: string]: Category} = {
   '7kjpp4k3': '1',
   'xk9gg6d0': '0',
 };
-const PLATFORMS: {[key: string]: string} = {
+const PLATFORMS: {[key: string]: Platform} = {
   // speedrun.com platforms
   'w89rwelk': 'N64',
   'v06dr394': 'VC', // Wii U
@@ -102,6 +105,12 @@ const VERIFIED_VALUES: {[key: string]: boolean} = {
   '5q8e86rq': true,
   '4qyxop3l': false,
 };
+const REGIONS: {[key: string]: Region} = {
+  'e6lxy1dz': 'EUR',
+  'o316x197': 'JPN',
+  'pr184lqn': 'USA',
+
+}
 /* eslint-enable */
 
 function mapApiRun(apiRun: ApiRun): Run {
@@ -120,6 +129,7 @@ function mapApiRun(apiRun: ApiRun): Run {
         platform: PLATFORMS[apiRun.values[PLATFORM_VARIABLE_ID]] as Platform,
       },
     },
+    region: REGIONS[apiRun.system.region],
     verified: VERIFIED_VALUES[apiRun.values[VERIFIED_VARIABLE_ID]],
     flags: [],
   };
