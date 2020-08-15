@@ -138,6 +138,19 @@ function mapApiRun(apiRun: ApiRun): Run {
   return run;
 }
 
+// Get a run by ID
+export async function getRun(id: string): Promise<Run> {
+  try {
+    console.debug(`GET /runs/${id}`);
+    const response = await axios.get<{data: ApiRun}>(`${API_BASE}/runs/${id}`);
+
+    return mapApiRun(response.data.data);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
 // Get all runs currently in the queue
 export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promise<Run[]> {
   console.debug(`Getting all unverified runs for ${game}`);
