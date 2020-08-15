@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {formatDuration} from './util';
 import {Run} from './srcom';
 
-type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED';
+type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED' | 'NO_REGION';
 
 export interface Flag {
   code: FlagCode;
@@ -107,6 +107,16 @@ export const FLAGS: Flag[] = [
     },
     reject: true,
     rejectMessage: 'Verified field should be "Yes".',
+  },
+  {
+    code: 'NO_REGION',
+    index: 4,
+    title: 'Region not provided',
+    check: run => {
+      return run.region === 'NONE';
+    },
+    reject: true,
+    rejectMessage: 'Region is required.',
   },
 ];
 
