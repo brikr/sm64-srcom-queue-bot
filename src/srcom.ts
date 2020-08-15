@@ -46,7 +46,7 @@ interface ApiUser {
 
 export type Category = '120' | '70' | '16' | '1' | '0' | 'MEME';
 export type Platform = 'N64' | 'VC' | 'EMU';
-export type Region = 'EUR' | 'JPN' | 'USA';
+export type Region = 'EUR' | 'JPN' | 'USA' | 'NONE';
 
 export interface Run {
   id: string;
@@ -129,7 +129,7 @@ function mapApiRun(apiRun: ApiRun): Run {
         platform: PLATFORMS[apiRun.values[PLATFORM_VARIABLE_ID]] as Platform,
       },
     },
-    region: REGIONS[apiRun.system.region],
+    region: REGIONS[apiRun.system.region] || 'NONE',
     verified: VERIFIED_VALUES[apiRun.values[VERIFIED_VARIABLE_ID]],
     flags: [],
   };
