@@ -1,28 +1,66 @@
 import {Request, Response} from 'express';
-import {getAllUnverifiedRuns, SUPER_MARIO_64} from './srcom';
+import {getAllUnverifiedRuns, SUPER_MARIO_64, SUPER_MARIO_64_MEMES, Run} from './srcom';
 import {formatDuration} from './util';
 
-export async function handleQueue(_req: Request, res: Response) {
-  const sm64Unverified = await getAllUnverifiedRuns(SUPER_MARIO_64);
+export async function handleQueue(req: Request, res: Response) {
+  // If true, show the meme queue instead of regular
+  const memeQueue = req.query['q'] === 'memes';
 
-  const sm64TableRows = sm64Unverified
+  let unverified: Run[];
+  if (memeQueue) {
+    unverified = await getAllUnverifiedRuns(SUPER_MARIO_64_MEMES);
+  } else {
+    unverified = await getAllUnverifiedRuns(SUPER_MARIO_64);
+  }
+
+  const sm64TableRows = unverified
     .map(run => {
-      const category = `${run.category} star`;
       const time = formatDuration(run.time);
-      const platform = run.platform.custom.platform;
       const flags = run.flags.map(f => f.title).join(', ');
       const submitted = run.submitted.fromNow();
-      return `
-      <tr>
-        <td>${category}</td>
-        <td><a href="https://speedrun.com/run/${run.id}">${time}</a></td>
-        <td>${platform}</td>
-        <td>${flags}</td>
-        <td>${submitted}</td>
-      </tr>
-    `;
+
+      if (memeQueue) {
+        // Category and platform aren't supported for meme queue
+        return `
+          <tr>
+            <td><a href="https://speedrun.com/run/${run.id}">${time}</a></td>
+            <td>${flags}</td>
+            <td>${submitted}</td>
+          </tr>
+        `;
+      } else {
+        const category = `${run.category} star`;
+        const platform = run.platform.custom.platform;
+        return `
+          <tr>
+            <td>${category}</td>
+            <td><a href="https://speedrun.com/run/${run.id}">${time}</a></td>
+            <td>${platform}</td>
+            <td>${flags}</td>
+            <td>${submitted}</td>
+          </tr>
+      `;
+      }
     })
     .join('');
+
+  let headerRow: string;
+  if (memeQueue) {
+    // Category and platform aren't supported for meme queue
+    headerRow = `
+      <th>Time</th>
+      <th>Flags</th>
+      <th>Submitted</th>
+  `;
+  } else {
+    headerRow = `
+      <th>Category</th>
+      <th>Time</th>
+      <th>Platform</th>
+      <th>Flags</th>
+      <th>Submitted</th>
+    `;
+  }
 
   const html = `
     <head>
@@ -47,14 +85,18 @@ export async function handleQueue(_req: Request, res: Response) {
                       sans-serif;
         }
 
-        a {
-          color: #f48fb1;
-        }
-
         .root {
           display: flex;
           flex-direction: column;
           align-items: center
+        }
+
+        a {
+          color: #f48fb1;
+        }
+
+        p {
+          margin-top: 0;
         }
 
         table {
@@ -71,13 +113,13 @@ export async function handleQueue(_req: Request, res: Response) {
     <body>
       <div class="root">
         <h1>Backup queue</h1>
+        <p>
+          <a href="/queue">Regular</a> -
+          <a href="/queue?q=memes">Memes</a>
+        </p>
         <table>
           <thead>
-            <th>Category</th>
-            <th>Time</th>
-            <th>Platform</th>
-            <th>Flags</th>
-            <th>Submitted</th>
+            ${headerRow}
           </thead>
           <tbody>
             ${sm64TableRows}
