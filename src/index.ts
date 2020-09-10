@@ -1,6 +1,13 @@
 import * as express from 'express';
 import {sendDailyStatsToDiscord, sendFlaggedRunsToDiscord} from './discord';
-import {getAllUnverifiedRuns, SUPER_MARIO_64, SUPER_MARIO_64_MEMES, getRecentlyExaminedRuns, rejectRun} from './srcom';
+import {
+  getAllUnverifiedRuns,
+  SUPER_MARIO_64,
+  SUPER_MARIO_64_MEMES,
+  getRecentlyExaminedRuns,
+  rejectRun,
+  getRun,
+} from './srcom';
 import {encodeFlags} from './util';
 import {environment} from './environment/environment';
 import {handleReason} from './reason';
@@ -32,6 +39,13 @@ app.get('/daily_stats', async (req, res) => {
   await sendFlaggedRunsToDiscord({sm64RecentlyExamined});
 
   res.sendStatus(200);
+});
+
+// Debug endpoint that gets a run with a certain ID and spits out the Run object which contains flags etc.
+app.get('/debug_run', async (req, res) => {
+  const run = await getRun(req.query['id'] as string);
+
+  res.send(run);
 });
 
 // Review pending runs and note any of them that could be autorejected due to their flags.
