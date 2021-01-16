@@ -7,6 +7,7 @@ import {runToString} from './util';
 
 interface ApiRun {
   id: string;
+  game: string;
   status: {
     status: 'new' | 'verified' | 'rejected';
     examiner: string;
@@ -44,13 +45,15 @@ interface ApiUser {
   };
 }
 
-export type Category = '120' | '70' | '16' | '1' | '0' | 'MEME';
+export type Category = '120' | '70' | '16' | '1' | '0' | 'STAGE' | 'MEME';
+export type Game = 'sm64' | 'sm64memes';
 export type Platform = 'N64' | 'VC' | 'EMU';
 export type Region = 'EUR' | 'JPN' | 'USA' | 'NONE';
 
 export interface Run {
   id: string;
   status: 'new' | 'verified' | 'rejected';
+  game: Game;
   category: Category;
   time: Duration;
   submitted: Moment;
@@ -113,11 +116,25 @@ const REGIONS: {[key: string]: Region} = {
 }
 /* eslint-enable */
 
+// Return the Category based on Game and category ID
+function getCategory(game: Game, categoryId: string): Category {
+  if (game === 'sm64') {
+    // For sm64, it's either a main category or it's stage RTA
+    return CATEGORIES[categoryId] || 'STAGE';
+  } else {
+    // For sm64memes, it's always a meme
+    return 'MEME';
+  }
+}
+
 function mapApiRun(apiRun: ApiRun): Run {
+  const game = apiRun.game === SUPER_MARIO_64 ? 'sm64' : 'sm64memes';
+
   const run: Run = {
     id: apiRun.id,
+    game,
     status: apiRun.status.status,
-    category: CATEGORIES[apiRun.category] || 'MEME',
+    category: getCategory(game, apiRun.category),
     time: moment.duration(apiRun.times.realtime),
     submitted: moment(apiRun.submitted),
     platform: {
