@@ -19,6 +19,11 @@ export const FLAGS: Flag[] = [
     index: 0,
     title: 'Has milliseconds',
     check: run => {
+      // For Stage RTA, milliseconds are always ok
+      if (run.category === 'STAGE') {
+        return false;
+      }
+
       // If a run is below this time for these categories, don't auto-reject for milliseconds
       const msOkTimes: {[key: string]: number} = {
         '120': moment.duration({hours: 1, minutes: 39}).asMilliseconds(),
