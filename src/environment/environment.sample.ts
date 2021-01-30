@@ -3,4 +3,5 @@ export const environment = {
   srcomApiKey: 'A SPEEDRUN.COM API KEY',
   webhookChannelId: 'A DISCORD CHANNEL ID',
   webhookSecret: 'A DISCORD WEBHOOK SECRET',
+  dev: true,
 };
