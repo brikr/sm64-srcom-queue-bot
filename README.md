@@ -12,7 +12,7 @@ The bot is a simple Express application that performs the above functions on var
 To run the application locally, you'll need the following:
 - A Node environment _to run the bot at all_.
 - A speedrun.com API key _to run the bot at all_. Instructions on how to obtain one can be found in [their API documentation](https://github.com/speedruncomorg/api/blob/master/authentication.md).
-  - If you wish to take any action on runs (e.g. rejection), the API key must be associated with an account that is a moderator. If the bot is running in [dev mode](TODO), you can see which actions _would_ be taken on a run without the bot attempting to take any action.
+  - If you wish to take any action on runs (e.g. rejection), the API key must be associated with an account that is a moderator. If the bot is running in dev mode, you can see which actions _would_ be taken on a run without the bot attempting to take any action.
 - A Discord webhook channel ID and secret _to send queue stats to a channel_.
 
 After cloning the repository, copy `src/environment/`**`environment.sample.ts`** to `src/environment/`**`environment.ts`**. Replace the placeholder values with your own. It's also recommended that you keep `dev: true` so that the bot doesn't make any changes to submitted runs while you are developing.
