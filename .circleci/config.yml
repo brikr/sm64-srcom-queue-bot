@@ -18,7 +18,7 @@ jobs:
                 paths: .
   deploy:
     docker:
-      - image: google/cloud-sdk
+      - image: gcr.io/google.com/cloudsdktool/cloud-sdk
     steps:
       - attach_workspace:
           at: ~/project
