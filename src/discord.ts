@@ -1,10 +1,15 @@
 import {MessageEmbed, WebhookClient} from 'discord.js';
 
 import {environment} from './environment/environment';
-import {ExaminedRun, Run} from './srcom';
+import {Flag} from './flags';
+import {ExaminedRun, Run, getPlayerFromRun} from './srcom';
 import {runToString} from './util';
 
 const webhookClient = new WebhookClient(environment.webhookChannelId, environment.webhookSecret);
+const rejectedRunsWebhookClient = new WebhookClient(
+  environment.rejectedRunsWebhookChannelId,
+  environment.rejectedRunsWebhookSecret
+);
 
 interface DailyStatsParams {
   sm64Unverified: Run[];
@@ -69,7 +74,37 @@ export async function sendDailyStatsToDiscord(params: DailyStatsParams) {
 interface FlaggedRunsParams {
   sm64RecentlyExamined: ExaminedRun[];
 }
+interface RejectedRunParams {
+  rejectedRun: Run;
+  rejectionFlags: Flag[];
+}
+export async function sendRejectedRunToDiscord(params: RejectedRunParams) {
+  const {rejectedRun, rejectionFlags} = params;
+  const user = await getPlayerFromRun(rejectedRun);
+  // Send message to Discord
+  const embed = new MessageEmbed({
+    title: `Rejected Run: ${runToString(rejectedRun)} by ${user}`,
+    fields: [
+      {
+        name: 'Reason(s):',
+        value: rejectionFlags.map(f => f.title).join('\n'),
+      },
+    ],
+    url: `https://speedrun.com/run/${rejectedRun.id}`,
+  });
+  embed.setTimestamp();
 
+  try {
+    console.debug('Sending message to Discord');
+    await rejectedRunsWebhookClient.send({
+      embeds: [embed],
+    });
+    console.debug('Message sent to Discord');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 export async function sendFlaggedRunsToDiscord(params: FlaggedRunsParams) {
   const {sm64RecentlyExamined} = params;
 

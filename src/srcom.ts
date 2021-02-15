@@ -14,6 +14,7 @@ interface ApiRun {
     // If a run is verified, this is the datetime that it was verified
     'verify-date': string;
   };
+  players: [{rel: string; id: string; uri: string}];
   // If a run is rejected, then all we have to go off of is the submitted datetime
   submitted: string;
   category: string;
@@ -57,6 +58,7 @@ export interface Run {
   category: Category;
   time: Duration;
   submitted: Moment;
+  players: [{rel: string; id: string; uri: string}];
   platform: {
     // There are two platform fields on the leaderboard: the speedrun.com specific one that every game has which
     // features platform dropdown  + emulated checkbox, and the SM64 leaderboard specific platforms that are N64, VC,
@@ -126,6 +128,17 @@ function getCategory(game: Game, categoryId: string): Category {
     return 'MEME';
   }
 }
+export async function getPlayerFromRun(run: Run) {
+  const userId = run.players[0].id;
+  try {
+    const response = await axios.get<ApiUser>(`${API_BASE}/users/${userId}`);
+
+    return response.data.data.names.international;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 function mapApiRun(apiRun: ApiRun): Run {
   const game = apiRun.game === SUPER_MARIO_64 ? 'sm64' : 'sm64memes';
@@ -134,6 +147,7 @@ function mapApiRun(apiRun: ApiRun): Run {
     id: apiRun.id,
     game,
     status: apiRun.status.status,
+    players: apiRun.players,
     category: getCategory(game, apiRun.category),
     time: moment.duration(apiRun.times.realtime),
     submitted: moment(apiRun.submitted),

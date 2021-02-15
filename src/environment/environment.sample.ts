@@ -4,4 +4,6 @@ export const environment = {
   webhookChannelId: 'A DISCORD CHANNEL ID',
   webhookSecret: 'A DISCORD WEBHOOK SECRET',
   dev: true,
+  rejectedRunsWebhookChannelId: 'A DISCORD CHANNEL ID',
+  rejectedRunsWebhookSecret: 'A DISCORD WEBHOOK SECRET',
 };
