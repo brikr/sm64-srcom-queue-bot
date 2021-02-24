@@ -2,10 +2,10 @@ import {MessageEmbed, WebhookClient} from 'discord.js';
 
 import {environment} from './environment/environment';
 import {Flag} from './flags';
-import {ExaminedRun, Run, getPlayerFromRun} from './srcom';
+import {ExaminedRun, Run} from './srcom';
 import {runToString} from './util';
 
-const webhookClient = new WebhookClient(environment.webhookChannelId, environment.webhookSecret);
+const webhookClient = new WebhookClient(environment.dailyStatsWebhookChannelId, environment.dailyStatsWebhookSecret);
 const rejectedRunsWebhookClient = new WebhookClient(
   environment.rejectedRunsWebhookChannelId,
   environment.rejectedRunsWebhookSecret
@@ -74,16 +74,18 @@ export async function sendDailyStatsToDiscord(params: DailyStatsParams) {
 interface FlaggedRunsParams {
   sm64RecentlyExamined: ExaminedRun[];
 }
+
 interface RejectedRunParams {
   rejectedRun: Run;
   rejectionFlags: Flag[];
 }
+
 export async function sendRejectedRunToDiscord(params: RejectedRunParams) {
   const {rejectedRun, rejectionFlags} = params;
-  const user = await getPlayerFromRun(rejectedRun);
+
   // Send message to Discord
   const embed = new MessageEmbed({
-    title: `Rejected Run: ${runToString(rejectedRun)} by ${user}`,
+    title: `Rejected Run: ${await runToString(rejectedRun)}`,
     fields: [
       {
         name: 'Reason(s):',
@@ -115,7 +117,7 @@ export async function sendFlaggedRunsToDiscord(params: FlaggedRunsParams) {
       const flagTitles = run.flags.map(flag => flag.title);
       embeds.push(
         new MessageEmbed({
-          title: `Flagged run: ${runToString(run)}`,
+          title: `Flagged run: ${await runToString(run)}`,
           description: flagTitles.join(', '),
           url: `https://speedrun.com/run/${run.id}`,
         })

@@ -58,7 +58,7 @@ export interface Run {
   category: Category;
   time: Duration;
   submitted: Moment;
-  players: [{rel: string; id: string; uri: string}];
+  players: string[];
   platform: {
     // There are two platform fields on the leaderboard: the speedrun.com specific one that every game has which
     // features platform dropdown  + emulated checkbox, and the SM64 leaderboard specific platforms that are N64, VC,
@@ -129,7 +129,7 @@ function getCategory(game: Game, categoryId: string): Category {
   }
 }
 export async function getPlayerFromRun(run: Run) {
-  const userId = run.players[0].id;
+  const userId = run.players[0];
   try {
     const response = await axios.get<ApiUser>(`${API_BASE}/users/${userId}`);
 
@@ -147,7 +147,7 @@ function mapApiRun(apiRun: ApiRun): Run {
     id: apiRun.id,
     game,
     status: apiRun.status.status,
-    players: apiRun.players,
+    players: apiRun.players.map(x => x.id),
     category: getCategory(game, apiRun.category),
     time: moment.duration(apiRun.times.realtime),
     submitted: moment(apiRun.submitted),
@@ -165,7 +165,6 @@ function mapApiRun(apiRun: ApiRun): Run {
     flags: [],
   };
   run.flags = getFlags(run);
-
   return run;
 }
 
@@ -322,7 +321,7 @@ export async function rejectRun(run: Run, reason: string) {
     console.log(
       JSON.stringify({
         type: 'rejection',
-        message: `Rejected ${runToString(run)}`,
+        message: `Rejected ${await runToString(run)}`,
         reason,
         runLink: `https://speedrun.com/run/${run.id}`,
         run,
