@@ -24,10 +24,10 @@ function createEnvironmentFile(
 }
 
 const srcomApiKey = process.env.SRCOM_API_KEY || '';
-const dailyStatsWebhookChannelId = process.env.DISCORD_WEBHOOK_CHANNEL_ID || '';
-const dailyStatsWebhookSecret = process.env.DISCORD_WEBHOOK_SECRET || '';
-const rejectedRunsWebhookChannelId = process.env.DISCORD_WEBHOOK_CHANNEL_ID || '';
-const rejectedRunsWebhookSecret = process.env.DISCORD_WEBHOOK_SECRET || '';
+const dailyStatsWebhookChannelId = process.env.DAILY_STATS_DISCORD_WEBHOOK_CHANNEL_ID || '';
+const dailyStatsWebhookSecret = process.env.DAILY_STATS_DISCORD_WEBHOOK_SECRET || '';
+const rejectedRunsWebhookChannelId = process.env.REJECTED_RUNS_DISCORD_WEBHOOK_CHANNEL_ID || '';
+const rejectedRunsWebhookSecret = process.env.REJECTED_RUNS_DISCORD_WEBHOOK_SECRET || '';
 createEnvironmentFile(
   srcomApiKey,
   dailyStatsWebhookChannelId,
