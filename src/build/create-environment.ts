@@ -3,20 +3,35 @@
 
 import {writeFileSync} from 'fs';
 
-function createEnvironmentFile(srcomApiKey: string, webhookChannelId: string, webhookSecret: string) {
+function createEnvironmentFile(
+  srcomApiKey: string,
+  dailyStatsWebhookChannelId: string,
+  dailyStatsWebhookSecret: string,
+  rejectedRunsWebhookChannelId: string,
+  rejectedRunsWebhookSecret: string
+) {
   const content = `
     export const environment = {
       srcomApiKey: '${srcomApiKey}',
-      webhookChannelId: '${webhookChannelId}',
-      webhookSecret: '${webhookSecret}',
+      dailyStatsWebhookChannelId: '${dailyStatsWebhookChannelId}',
+      dailyStatsWebhookSecret: '${dailyStatsWebhookSecret}',
+      rejectedRunsWebhookChannelId = '${rejectedRunsWebhookChannelId}',
+      rejectedRunsWebhookSecret = '${rejectedRunsWebhookSecret}',
       dev: false,
     }
   `;
-
   writeFileSync('src/environment/environment.ts', content, {encoding: 'utf8'});
 }
 
 const srcomApiKey = process.env.SRCOM_API_KEY || '';
-const webhookChannelId = process.env.DISCORD_WEBHOOK_CHANNEL_ID || '';
-const webhookSecret = process.env.DISCORD_WEBHOOK_SECRET || '';
-createEnvironmentFile(srcomApiKey, webhookChannelId, webhookSecret);
+const dailyStatsWebhookChannelId = process.env.DAILY_STATS_DISCORD_WEBHOOK_CHANNEL_ID || '';
+const dailyStatsWebhookSecret = process.env.DAILY_STATS_DISCORD_WEBHOOK_SECRET || '';
+const rejectedRunsWebhookChannelId = process.env.REJECTED_RUNS_DISCORD_WEBHOOK_CHANNEL_ID || '';
+const rejectedRunsWebhookSecret = process.env.REJECTED_RUNS_DISCORD_WEBHOOK_SECRET || '';
+createEnvironmentFile(
+  srcomApiKey,
+  dailyStatsWebhookChannelId,
+  dailyStatsWebhookSecret,
+  rejectedRunsWebhookChannelId,
+  rejectedRunsWebhookSecret
+);

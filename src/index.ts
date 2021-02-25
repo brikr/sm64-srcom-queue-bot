@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {sendDailyStatsToDiscord, sendFlaggedRunsToDiscord} from './discord';
+import {sendDailyStatsToDiscord, sendFlaggedRunsToDiscord, sendRejectedRunToDiscord} from './discord';
 import {
   getAllUnverifiedRuns,
   SUPER_MARIO_64,
@@ -66,13 +66,18 @@ app.get('/review_runs', async (req, res) => {
         `Rejection reason(s): ${baseUrl}/reason?f=${encodeFlags(run.flags)}\n` +
         'Submission guide: https://bthl.es/3s\n' +
         'Fix the submission, and then submit again.';
-
       if (environment.dev) {
         console.log('Would have rejected run:');
         console.log(run);
         console.log(rejectionMessage);
       } else {
         rejectRun(run, rejectionMessage);
+        const rejectionFlags = run.flags.filter(f => f.reject);
+
+        await sendRejectedRunToDiscord({
+          rejectedRun: run,
+          rejectionFlags,
+        });
       }
     }
   }
