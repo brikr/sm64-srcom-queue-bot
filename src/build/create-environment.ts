@@ -15,8 +15,8 @@ function createEnvironmentFile(
       srcomApiKey: '${srcomApiKey}',
       dailyStatsWebhookChannelId: '${dailyStatsWebhookChannelId}',
       dailyStatsWebhookSecret: '${dailyStatsWebhookSecret}',
-      rejectedRunsWebhookChannelId = '${rejectedRunsWebhookChannelId}',
-      rejectedRunsWebhookSecret = '${rejectedRunsWebhookSecret}',
+      rejectedRunsWebhookChannelId: '${rejectedRunsWebhookChannelId}',
+      rejectedRunsWebhookSecret: '${rejectedRunsWebhookSecret}',
       dev: false,
     }
   `;
