@@ -46,8 +46,8 @@ export const FLAGS: Flag[] = [
     },
     reject: true,
     rejectMessage:
-      'Milliseconds are in the run time. ' +
-      'Unless your run is a top time in a short category, you should not include milliseconds in your submission.',
+      'Milliseconds are in the run time; ' +
+      'unless your run is a top time in a short category, you should not include milliseconds in your submission.',
   },
   {
     code: 'SHOUTOUT',
@@ -143,4 +143,15 @@ export function getFlags(run: Run): Flag[] {
   console.debug(`${flags.length} flags found for ${run.id}`);
 
   return flags;
+}
+
+export function getFullRejectionMessage(run: Run): string {
+  return (
+    run.flags
+      .filter(f => f.reject)
+      .map(f => f.rejectMessage)
+      .join(' ') +
+    ' Please submit a new run and follow the run submission guide: ' +
+    'https://ukikipedia.net/wiki/RTA_Guide/Submitting_Runs_to_Speedrun.com'
+  );
 }
