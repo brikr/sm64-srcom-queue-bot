@@ -2,6 +2,7 @@ import {Duration} from 'moment';
 import {getPlayerFromRun, Run} from './srcom';
 import {encode, decode} from 'base62';
 import {Flag, FLAGS} from './flags';
+import {Logger} from './logger';
 
 /**
  * Converts moment duration to H:MM:SS or MM:SS format
@@ -54,7 +55,7 @@ export function decodeFlags(hash: string): Flag[] {
 
   if (num >= 1 << FLAGS.length) {
     // funky number given, maybe someone messing with url params
-    console.debug('decodeFlags: Got weird number. Returning empty array');
+    Logger.debug('decodeFlags: Got weird number. Returning empty array');
     return [];
   }
 

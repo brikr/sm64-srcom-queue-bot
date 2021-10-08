@@ -12,6 +12,7 @@ import {environment} from './environment/environment';
 import {handleReason} from './reason';
 import {handleQueue} from './queue';
 import {getFullRejectionMessage} from './flags';
+import {Logger} from './logger';
 
 const app = express();
 
@@ -19,7 +20,7 @@ const app = express();
 // Run daily at midnight UTC
 app.get('/daily_stats', async (req, res) => {
   if (req.headers['x-appengine-cron'] === undefined) {
-    console.log('Request is not from GAE cron. Rejecting');
+    Logger.log('Request is not from GAE cron. Rejecting');
     res.sendStatus(403);
     return;
   }
@@ -45,8 +46,10 @@ app.get('/daily_stats', async (req, res) => {
 app.get('/debug_run', async (req, res) => {
   try {
     const run = await getRun(req.query['id'] as string);
+    Logger.log(run);
     res.send({run, rejectionMessage: getFullRejectionMessage(run)});
   } catch (e) {
+    Logger.error(e);
     res.sendStatus(500);
     res.send('Internal error');
   }
@@ -56,7 +59,7 @@ app.get('/debug_run', async (req, res) => {
 // Run every 30 minutes
 app.get('/review_runs', async (req, res) => {
   if (req.headers['x-appengine-cron'] === undefined) {
-    console.log('Request is not from GAE cron. Rejecting');
+    Logger.log('Request is not from GAE cron. Rejecting');
     res.sendStatus(403);
     return;
   }
@@ -67,9 +70,9 @@ app.get('/review_runs', async (req, res) => {
     if (run.flags.filter(f => f.reject).length > 0) {
       const rejectionMessage = getFullRejectionMessage(run);
       if (environment.dev) {
-        console.log('Would have rejected run:');
-        console.log(run);
-        console.log(rejectionMessage);
+        Logger.log('Would have rejected run:');
+        Logger.log(run);
+        Logger.log(rejectionMessage);
       } else {
         rejectRun(run, rejectionMessage);
         const rejectionFlags = run.flags.filter(f => f.reject);
@@ -90,8 +93,8 @@ app.get('/reason', handleReason);
 app.get('/queue', handleQueue);
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log('listenin');
+  Logger.log('listenin');
   if (environment.dev) {
-    console.log('dev mode is on');
+    Logger.log('dev mode is on');
   }
 });

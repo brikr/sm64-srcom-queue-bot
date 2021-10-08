@@ -2,6 +2,7 @@ import {MessageEmbed, WebhookClient} from 'discord.js';
 
 import {environment} from './environment/environment';
 import {Flag} from './flags';
+import {Logger} from './logger';
 import {ExaminedRun, Run} from './srcom';
 import {runToString} from './util';
 
@@ -60,13 +61,13 @@ export async function sendDailyStatsToDiscord(params: DailyStatsParams) {
   embed.setTimestamp();
 
   try {
-    console.debug('Sending message to Discord');
+    Logger.debug('Sending message to Discord');
     await webhookClient.send({
       embeds: [embed],
     });
-    console.debug('Message sent to Discord');
+    Logger.debug('Message sent to Discord');
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     throw e;
   }
 }
@@ -97,13 +98,13 @@ export async function sendRejectedRunToDiscord(params: RejectedRunParams) {
   embed.setTimestamp();
 
   try {
-    console.debug('Sending message to Discord');
+    Logger.debug('Sending message to Discord');
     await rejectedRunsWebhookClient.send({
       embeds: [embed],
     });
-    console.debug('Message sent to Discord');
+    Logger.debug('Message sent to Discord');
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     throw e;
   }
 }
@@ -132,15 +133,15 @@ export async function sendFlaggedRunsToDiscord(params: FlaggedRunsParams) {
   }
 
   try {
-    console.debug(`Sending ${embedSlices.length} messages to Discord`);
+    Logger.debug(`Sending ${embedSlices.length} messages to Discord`);
     for (const slice of embedSlices) {
       await webhookClient.send({
         embeds: slice,
       });
     }
-    console.debug('Messages sent to Discord');
+    Logger.debug('Messages sent to Discord');
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     throw e;
   }
 }
