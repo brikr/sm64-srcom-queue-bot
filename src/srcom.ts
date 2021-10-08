@@ -4,6 +4,7 @@ import {Moment, Duration} from 'moment';
 import {getFlags, Flag} from './flags';
 import {environment} from './environment/environment';
 import {runToString} from './util';
+import {Logger} from './logger';
 
 interface ApiRun {
   id: string;
@@ -88,22 +89,21 @@ export const SUPER_MARIO_64 = 'o1y9wo6q';
 export const SUPER_MARIO_64_MEMES = 'o1ymwk1q';
 const PLATFORM_VARIABLE_ID = 'e8m7em86';
 const VERIFIED_VARIABLE_ID = 'kn04ewol';
-/* eslint-disable prettier/prettier */
 const CATEGORIES: {[key: string]: Category} = {
-  'wkpoo02r': '120',
+  wkpoo02r: '120',
   '7dgrrxk4': '70',
-  'n2y55mko': '16',
+  n2y55mko: '16',
   '7kjpp4k3': '1',
-  'xk9gg6d0': '0',
+  xk9gg6d0: '0',
 };
 const PLATFORMS: {[key: string]: Platform} = {
   // speedrun.com platforms
-  'w89rwelk': 'N64',
-  'v06dr394': 'VC', // Wii U
-  'nzelreqp': 'VC', // Wii
+  w89rwelk: 'N64',
+  v06dr394: 'VC', // Wii U
+  nzelreqp: 'VC', // Wii
   // SM64 custom platforms
   '9qj7z0oq': 'N64',
-  'jq6540ol': 'VC',
+  jq6540ol: 'VC',
   '5lmoxk01': 'EMU',
 };
 const VERIFIED_VALUES: {[key: string]: boolean} = {
@@ -111,12 +111,10 @@ const VERIFIED_VALUES: {[key: string]: boolean} = {
   '4qyxop3l': false,
 };
 const REGIONS: {[key: string]: Region} = {
-  'e6lxy1dz': 'EUR',
-  'o316x197': 'JPN',
-  'pr184lqn': 'USA',
-
-}
-/* eslint-enable */
+  e6lxy1dz: 'EUR',
+  o316x197: 'JPN',
+  pr184lqn: 'USA',
+};
 
 // Return the Category based on Game and category ID
 function getCategory(game: Game, categoryId: string): Category {
@@ -135,7 +133,7 @@ export async function getPlayerFromRun(run: Run) {
 
     return response.data.data.names.international;
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     throw e;
   }
 }
@@ -171,26 +169,26 @@ function mapApiRun(apiRun: ApiRun): Run {
 // Get a run by ID
 export async function getRun(id: string): Promise<Run> {
   try {
-    console.debug(`GET /runs/${id}`);
+    Logger.debug(`GET /runs/${id}`);
     const response = await axios.get<{data: ApiRun}>(`${API_BASE}/runs/${id}`);
 
     return mapApiRun(response.data.data);
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     throw e;
   }
 }
 
 // Get all runs currently in the queue
 export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promise<Run[]> {
-  console.debug(`Getting all unverified runs for ${game}`);
+  Logger.debug(`Getting all unverified runs for ${game}`);
   const runs = [];
   let offset = 0;
   let size = 200;
   while (size === 200) {
     // Continue getting runs until we receive fewer than the amount we requested, meaning we hit the last page.
     try {
-      console.debug(`GET /runs  offset=${offset}`);
+      Logger.debug(`GET /runs  offset=${offset}`);
       const response = await axios.get<ApiRuns>(`${API_BASE}/runs`, {
         params: {
           game,
@@ -207,7 +205,7 @@ export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promi
       size = response.data.pagination.size;
       offset += 200;
     } catch (e) {
-      console.error(e);
+      Logger.error(e);
       throw e;
     }
   }
@@ -222,7 +220,7 @@ export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promi
 
 // Get all runs examined within the past 24 hours
 export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Promise<ExaminedRun[]> {
-  console.debug(`Getting all recently verified runs for ${game}`);
+  Logger.debug(`Getting all recently verified runs for ${game}`);
   const runs = [];
   const minDate = moment().subtract(24, 'h');
   for (const status of ['verified', 'rejected']) {
@@ -231,7 +229,7 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
     while (size === 200) {
       // Continue getting runs until we receive fewer than the amount we requested, meaning we hit the last page.
       try {
-        console.debug(`GET /runs  offset=${offset}`);
+        Logger.debug(`GET /runs  offset=${offset}`);
         const response = await axios.get<ApiRuns>(`${API_BASE}/runs`, {
           params: {
             game,
@@ -269,7 +267,7 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
         size = response.data.pagination.size;
         offset += 200;
       } catch (e) {
-        console.error(e);
+        Logger.error(e);
         throw e;
       }
     }
@@ -287,7 +285,7 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
 
       examiners[id] = response.data.data.names.international;
     } catch (e) {
-      console.error(e);
+      Logger.error(e);
       throw e;
     }
   }
@@ -318,19 +316,17 @@ export async function rejectRun(run: Run, reason: string) {
         },
       }
     );
-    console.log(
-      JSON.stringify({
-        type: 'rejection',
-        message: `Rejected ${await runToString(run)}`,
-        reason,
-        runLink: `https://speedrun.com/run/${run.id}`,
-        run,
-        response: response.data,
-      })
-    );
-  } catch (error) {
-    const errorData = error.response ? error.response : error.message;
-    console.error({
+    Logger.log({
+      type: 'rejection',
+      message: `Rejected ${await runToString(run)}`,
+      reason,
+      runLink: `https://speedrun.com/run/${run.id}`,
+      run,
+      response: response.data,
+    });
+  } catch (e) {
+    const errorData = e.response ? e.response : e.message;
+    Logger.error({
       type: 'error',
       message: `Failed to reject run with id ${run.id}`,
       reason,

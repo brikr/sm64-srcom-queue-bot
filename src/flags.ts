@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import {formatDuration} from './util';
 import {Run} from './srcom';
+import {Logger} from './logger';
 
 type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED' | 'NO_REGION';
 
@@ -131,7 +132,7 @@ export function getFlags(run: Run): Flag[] {
     return [];
   }
 
-  console.debug(`Calculating flags for ${run.id} (${run.category} star in ${formatDuration(run.time)})`);
+  Logger.debug(`Calculating flags for ${run.id} (${run.category} star in ${formatDuration(run.time)})`);
 
   const flags = FLAGS.reduce<Flag[]>((acc, flag) => {
     if (flag.check(run)) {
@@ -140,7 +141,7 @@ export function getFlags(run: Run): Flag[] {
     return acc;
   }, []);
 
-  console.debug(`${flags.length} flags found for ${run.id}`);
+  Logger.debug(`${flags.length} flags found for ${run.id}`);
 
   return flags;
 }
