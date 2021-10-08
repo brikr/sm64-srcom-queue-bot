@@ -8,10 +8,10 @@ import {
   rejectRun,
   getRun,
 } from './srcom';
+import {encodeFlags} from './util';
 import {environment} from './environment/environment';
 import {handleReason} from './reason';
 import {handleQueue} from './queue';
-import {getFullRejectionMessage} from './flags';
 import {Logger} from './logger';
 
 const app = express();
@@ -47,7 +47,7 @@ app.get('/debug_run', async (req, res) => {
   try {
     const run = await getRun(req.query['id'] as string);
     Logger.log(run);
-    res.send({run, rejectionMessage: getFullRejectionMessage(run)});
+    res.send({run});
   } catch (e) {
     Logger.error(e);
     res.sendStatus(500);
@@ -65,10 +65,14 @@ app.get('/review_runs', async (req, res) => {
   }
 
   const sm64Unverified = await getAllUnverifiedRuns(SUPER_MARIO_64);
+  const baseUrl = environment.dev ? 'localhost:8080' : 'https://sm64.dev';
 
   for (const run of sm64Unverified) {
     if (run.flags.filter(f => f.reject).length > 0) {
-      const rejectionMessage = getFullRejectionMessage(run);
+      const rejectionMessage =
+        `Rejection reason(s): ${baseUrl}/reason?f=${encodeFlags(run.flags)}\n` +
+        'Submission guide: https://bthl.es/3s\n' +
+        'Fix the submission, and then submit again.';
       if (environment.dev) {
         Logger.log('Would have rejected run:');
         Logger.log(run);
