@@ -101,6 +101,7 @@ const PLATFORMS: {[key: string]: Platform} = {
   w89rwelk: 'N64',
   v06dr394: 'VC', // Wii U
   nzelreqp: 'VC', // Wii
+  '7m6ylw9p': 'VC', // Switch
   // SM64 custom platforms
   '9qj7z0oq': 'N64',
   jq6540ol: 'VC',
