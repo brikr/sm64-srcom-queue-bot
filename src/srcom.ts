@@ -190,6 +190,7 @@ export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promi
           // Pagination params
           max: 200,
           offset,
+          embed: 'players',
         },
       });
 
@@ -234,6 +235,7 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
             // Pagination params
             max: 200,
             offset,
+            embed: 'players',
           },
         });
 
