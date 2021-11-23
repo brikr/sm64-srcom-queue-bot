@@ -8,7 +8,7 @@ import {
   rejectRun,
   getRun,
 } from './srcom';
-import {encodeFlags} from './util';
+import {encodeFlags, runToString} from './util';
 import {environment} from './environment/environment';
 import {handleReason} from './reason';
 import {handleQueue} from './queue';
@@ -46,11 +46,12 @@ app.get('/daily_stats', async (req, res) => {
 app.get('/debug_run', async (req, res) => {
   try {
     const run = await getRun(req.query['id'] as string);
+    Logger.log(runToString(run));
     Logger.log(run);
     res.send({run});
   } catch (e) {
     Logger.error(e);
-    res.sendStatus(500);
+    res.status(500);
     res.send('Internal error');
   }
 });
