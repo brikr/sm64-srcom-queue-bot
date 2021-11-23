@@ -86,7 +86,7 @@ export async function sendRejectedRunToDiscord(params: RejectedRunParams) {
 
   // Send message to Discord
   const embed = new MessageEmbed({
-    title: `Rejected Run: ${await runToString(rejectedRun)}`,
+    title: `Rejected Run: ${runToString(rejectedRun)}`,
     fields: [
       {
         name: 'Reason(s):',
@@ -118,7 +118,7 @@ export async function sendFlaggedRunsToDiscord(params: FlaggedRunsParams) {
       const flagTitles = run.flags.map(flag => flag.title);
       embeds.push(
         new MessageEmbed({
-          title: `Flagged run: ${await runToString(run)}`,
+          title: `Flagged run: ${runToString(run)}`,
           description: flagTitles.join(', '),
           url: `https://speedrun.com/run/${run.id}`,
         })

@@ -2,8 +2,10 @@ import * as moment from 'moment';
 import {formatDuration} from './util';
 import {Run} from './srcom';
 import {Logger} from './logger';
+import {BANLIST} from './banlist';
+import {environment} from './environment/environment';
 
-type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED' | 'NO_REGION';
+type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED' | 'NO_REGION' | 'BANNED_RUNNER';
 
 export interface Flag {
   code: FlagCode;
@@ -124,11 +126,21 @@ export const FLAGS: Flag[] = [
     reject: true,
     rejectMessage: 'Region is required.',
   },
+  {
+    code: 'BANNED_RUNNER',
+    index: 5,
+    title: 'Banned runner',
+    check: run => {
+      return run.players.some(player => BANLIST.includes(player));
+    },
+    reject: true,
+    rejectMessage: 'You are banned from submitting runs.',
+  },
 ];
 
 export function getFlags(run: Run): Flag[] {
-  if (run.status === 'rejected') {
-    // Don't flag rejected runs
+  if (run.status === 'rejected' && !environment.dev) {
+    // Don't flag rejected runs unless in dev mode
     return [];
   }
 

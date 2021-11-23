@@ -1,8 +1,8 @@
 import {Duration} from 'moment';
-import {getPlayerFromRun, Run} from './srcom';
 import {encode, decode} from 'base62';
 import {Flag, FLAGS} from './flags';
 import {Logger} from './logger';
+import {Run} from './srcom';
 
 /**
  * Converts moment duration to H:MM:SS or MM:SS format
@@ -26,9 +26,8 @@ export function formatDuration(duration: Duration) {
  * Readable string from run
  * @param run
  */
-export async function runToString(run: Run) {
-  const user = await getPlayerFromRun(run);
-  return `${run.category} star in ${formatDuration(run.time)} by ${user}`;
+export function runToString(run: Run) {
+  return `${run.category} star in ${formatDuration(run.time)} by ${run.players[0]}`;
 }
 
 /**

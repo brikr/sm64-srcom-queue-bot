@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "node build/index.js",
-    "dev": "npm run gcp-build && node build/index.js",
+    "dev": "nodemon -L --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/index.ts\"",
     "gcp-build": "tsc",
     "deploy": "gcloud app deploy",
     "check": "gts check",
@@ -38,6 +38,7 @@
     "typescript": "^3.9.5"
   },
   "devDependencies": {
+    "nodemon": "^2.0.15",
     "ts-node": "^8.10.2"
   }
 }

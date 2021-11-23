@@ -15,7 +15,9 @@ interface ApiRun {
     // If a run is verified, this is the datetime that it was verified
     'verify-date': string;
   };
-  players: [{rel: string; id: string; uri: string}];
+  players: {
+    data: Array<ApiUser>;
+  };
   // If a run is rejected, then all we have to go off of is the submitted datetime
   submitted: string;
   category: string;
@@ -39,11 +41,9 @@ interface ApiRuns {
 }
 
 interface ApiUser {
-  data: {
-    id: string;
-    names: {
-      international: string;
-    };
+  id: string;
+  names: {
+    international: string;
   };
 }
 
@@ -127,17 +127,6 @@ function getCategory(game: Game, categoryId: string): Category {
     return 'MEME';
   }
 }
-export async function getPlayerFromRun(run: Run) {
-  const userId = run.players[0];
-  try {
-    const response = await axios.get<ApiUser>(`${API_BASE}/users/${userId}`);
-
-    return response.data.data.names.international;
-  } catch (e) {
-    Logger.error(e);
-    throw e;
-  }
-}
 
 function mapApiRun(apiRun: ApiRun): Run {
   const game = apiRun.game === SUPER_MARIO_64 ? 'sm64' : 'sm64memes';
@@ -146,7 +135,7 @@ function mapApiRun(apiRun: ApiRun): Run {
     id: apiRun.id,
     game,
     status: apiRun.status.status,
-    players: apiRun.players.map(x => x.id),
+    players: apiRun.players.data.map(x => x.names.international),
     category: getCategory(game, apiRun.category),
     time: moment.duration(apiRun.times.realtime),
     submitted: moment(apiRun.submitted),
@@ -171,7 +160,11 @@ function mapApiRun(apiRun: ApiRun): Run {
 export async function getRun(id: string): Promise<Run> {
   try {
     Logger.debug(`GET /runs/${id}`);
-    const response = await axios.get<{data: ApiRun}>(`${API_BASE}/runs/${id}`);
+    const response = await axios.get<{data: ApiRun}>(`${API_BASE}/runs/${id}`, {
+      params: {
+        embed: 'players',
+      },
+    });
 
     return mapApiRun(response.data.data);
   } catch (e) {
@@ -282,7 +275,7 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
   // Populate names for these examiners
   for (const id in examiners) {
     try {
-      const response = await axios.get<ApiUser>(`${API_BASE}/users/${id}`);
+      const response = await axios.get<{data: ApiUser}>(`${API_BASE}/users/${id}`);
 
       examiners[id] = response.data.data.names.international;
     } catch (e) {
@@ -319,7 +312,7 @@ export async function rejectRun(run: Run, reason: string) {
     );
     Logger.log({
       type: 'rejection',
-      message: `Rejected ${await runToString(run)}`,
+      message: `Rejected ${runToString(run)}`,
       reason,
       runLink: `https://speedrun.com/run/${run.id}`,
       run,
