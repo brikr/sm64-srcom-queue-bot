@@ -5,4 +5,5 @@ export const BANLIST = [
   'jk_kyle', // Reason: fake run https://www.speedrun.com/sm64/run/y8en5gdy
   'Issa_the_shadow_cat', // Reason: fake run https://www.speedrun.com/sm64/run/y8eljexy
   'Tenden', // Reason: spam run https://www.speedrun.com/sm64/run/yjxj4lnz
+  'Johnnyses', //Reason: spam run https://www.speedrun.com/sm64/run/y6n718qz
 ];
