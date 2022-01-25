@@ -7,4 +7,5 @@ export const BANLIST = [
   'Tenden', // Reason: spam run https://www.speedrun.com/sm64/run/yjxj4lnz
   'Johnnyses', //Reason: spam run https://www.speedrun.com/sm64/run/y6n718qz
   'Epic_Gamer_Gamer', // Reason: fake run https://www.speedrun.com/sm64/run/mkeg3wlm
+  'Match28', // Reason: fake run https://www.speedrun.com/sm64/run/zn7qjo8m
 ];
