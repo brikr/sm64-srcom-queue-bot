@@ -8,4 +8,5 @@ export const BANLIST = [
   'Johnnyses', //Reason: spam run https://www.speedrun.com/sm64/run/y6n718qz
   'Epic_Gamer_Gamer', // Reason: fake run https://www.speedrun.com/sm64/run/mkeg3wlm
   'Match28', // Reason: fake run https://www.speedrun.com/sm64/run/zn7qjo8m
+  'edorb', // Reason: used someone else's run https://www.speedrun.com/sm64/run/ywj5nvnz
 ];
