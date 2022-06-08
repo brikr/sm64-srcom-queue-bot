@@ -11,5 +11,12 @@ export const BANLIST = [
   'smallchild29073821', // Reason: fake run https://www.speedrun.com/sm64/run/yjxeq53z
   'nomombon', // Reason: fake run https://www.speedrun.com/sm64/run/z12v00wy
   'edorb', // Reason: used someone else's run https://www.speedrun.com/sm64/run/ywj5nvnz
-  'snappyturtle111', // Reason: spams run https://www.speedrun.com/sm64/run/zxl1dwqz
+  'snappyturtle111', // Reason: spam run https://www.speedrun.com/sm64/run/zxl1dwqz
+  'superspeedrun64', // Reason: used someone else's run https://www.speedrun.com/sm64/run/yopp130m
+  'DreamGamer420', // Reason: fake run https://www.speedrun.com/sm64/run/y6nk4pjz
+  'BadKarl', // Reason: used someone else's run https://www.speedrun.com/sm64/run/zgd4190z
+  'bublsonicboom', // Reason: used someone else's run https://www.speedrun.com/sm64/run/z0ogxjoz
+  'caticidespeedruns', // Reason: spam https://www.speedrun.com/sm64/run/ywjnp5pz
+  'TTVImATaxi', // Reason: spam https://www.speedrun.com/sm64/run/z0oj6v4z
+  'Coachhy', // Reason: spam https://www.speedrun.com/sm64/run/z123d1ry
 ];
