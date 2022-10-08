@@ -5,6 +5,7 @@ import {getFlags, Flag} from './flags';
 import {environment} from './environment/environment';
 import {runToString} from './util';
 import {Logger} from './logger';
+import {URL} from 'url';
 
 interface ApiRun {
   id: string;
@@ -31,6 +32,12 @@ interface ApiRun {
     region: string;
   };
   values: {[key: string]: string};
+  videos?: {
+    links?: Array<{
+      uri: string;
+    }>;
+    text?: string;
+  };
 }
 
 interface ApiRuns {
@@ -74,6 +81,7 @@ export interface Run {
   };
   region: Region;
   verified: boolean;
+  videos: string[];
   flags: Flag[];
 }
 
@@ -128,7 +136,31 @@ function getCategory(game: Game, categoryId: string): Category {
   }
 }
 
-function mapApiRun(apiRun: ApiRun): Run {
+// from brikr/srcom-queue-tool
+function mapApiRunVideos(apiRun: ApiRun): string[] {
+  if (apiRun.videos?.links) {
+    // we have nice links, just sanitize em and return
+    return apiRun.videos.links.map(link => link.uri);
+  } else if (apiRun.videos?.text) {
+    // there is text that is either a comment about no video (banned) or maybe just a url without protocol
+    // try adding protocol and see if it's a valid url
+    const maybeUrlString = `https://${apiRun.videos.text}`;
+    try {
+      const url = new URL(maybeUrlString);
+
+      // if we get here, it is a url! sanitize and return
+      return [url.toString()];
+    } catch (e) {
+      // it still isn't a url, assume no video
+      return [];
+    }
+  } else {
+    // can't find shit
+    return [];
+  }
+}
+
+async function mapApiRun(apiRun: ApiRun): Promise<Run> {
   const game = apiRun.game === SUPER_MARIO_64 ? 'sm64' : 'sm64memes';
 
   const run: Run = {
@@ -150,9 +182,10 @@ function mapApiRun(apiRun: ApiRun): Run {
     },
     region: REGIONS[apiRun.system.region] || 'NONE',
     verified: VERIFIED_VALUES[apiRun.values[VERIFIED_VARIABLE_ID]],
+    videos: mapApiRunVideos(apiRun),
     flags: [],
   };
-  run.flags = getFlags(run);
+  run.flags = await getFlags(run);
   return run;
 }
 
@@ -166,7 +199,7 @@ export async function getRun(id: string): Promise<Run> {
       },
     });
 
-    return mapApiRun(response.data.data);
+    return await mapApiRun(response.data.data);
   } catch (e) {
     Logger.error(e);
     throw e;
@@ -176,7 +209,7 @@ export async function getRun(id: string): Promise<Run> {
 // Get all runs currently in the queue
 export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promise<Run[]> {
   Logger.debug(`Getting all unverified runs for ${game}`);
-  const runs = [];
+  const apiRuns = [];
   let offset = 0;
   let size = 200;
   while (size === 200) {
@@ -194,7 +227,7 @@ export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promi
         },
       });
 
-      runs.push(response.data.data);
+      apiRuns.push(response.data.data);
 
       // Next page
       size = response.data.pagination.size;
@@ -205,12 +238,15 @@ export async function getAllUnverifiedRuns(game: string = SUPER_MARIO_64): Promi
     }
   }
 
-  // Convert ApiRuns[] into Run[] and calculate flags
-  return runs.reduce<Run[]>((acc, val) => {
-    const mapped = val.map<Run>(mapApiRun);
-
-    return acc.concat(mapped);
-  }, []);
+  // Convert ApiRuns[][] into Run[] and calculate flags
+  const runs = [];
+  for (const apiRunGroup of apiRuns) {
+    for (const apiRun of apiRunGroup) {
+      const run = await mapApiRun(apiRun);
+      runs.push(run);
+    }
+  }
+  return runs;
 }
 
 // Get all runs examined within the past 24 hours
@@ -244,7 +280,7 @@ export async function getRecentlyExaminedRuns(game: string = SUPER_MARIO_64): Pr
         for (const apiRun of response.data.data) {
           const runDate = status === 'verified' ? moment(apiRun.status['verify-date']) : moment(apiRun.submitted);
           if (runDate.isAfter(minDate)) {
-            const run = mapApiRun(apiRun);
+            const run = await mapApiRun(apiRun);
             runs.push({
               ...run,
               examiner: apiRun.status.examiner,
