@@ -4,14 +4,22 @@ import {Run} from './srcom';
 import {Logger} from './logger';
 import {BANLIST} from './banlist';
 import {environment} from './environment/environment';
+import {getVideoType} from './twitch';
 
-type FlagCode = 'MS' | 'SHOUTOUT' | 'PLATFORM_MISMATCH' | 'BAD_VERIFIED' | 'NO_REGION' | 'BANNED_RUNNER';
+type FlagCode =
+  | 'MS'
+  | 'SHOUTOUT'
+  | 'PLATFORM_MISMATCH'
+  | 'BAD_VERIFIED'
+  | 'NO_REGION'
+  | 'BANNED_RUNNER'
+  | 'TWITCH_PAST_BROADCAST';
 
 export interface Flag {
   code: FlagCode;
   index: number;
   title: string;
-  check: (run: Run) => boolean;
+  check: (run: Run) => boolean | Promise<boolean>;
   reject: boolean;
   rejectMessage?: string;
 }
@@ -136,9 +144,33 @@ export const FLAGS: Flag[] = [
     reject: true,
     rejectMessage: 'You are banned from submitting runs.',
   },
+  {
+    code: 'TWITCH_PAST_BROADCAST',
+    index: 6,
+    title: 'Video is Twitch past broadcast',
+    check: async run => {
+      for (const video of run.videos) {
+        const match = video.match(/twitch.tv\/videos\/(\d+)/);
+        if (match) {
+          const id = match[1];
+          const type = await getVideoType(id);
+          if (type === 'archive') {
+            // past broadcast detected; short circuit out
+            return true;
+          }
+        }
+      }
+
+      // no past broadcasts detected
+      return false;
+    },
+    reject: true,
+    rejectMessage:
+      'Twitch past broadcasts are not allowed as they are deleted over time. Please highlight the run instead.',
+  },
 ];
 
-export function getFlags(run: Run): Flag[] {
+export async function getFlags(run: Run): Promise<Flag[]> {
   if (run.status === 'rejected' && !environment.dev) {
     // Don't flag rejected runs unless in dev mode
     return [];
@@ -146,12 +178,12 @@ export function getFlags(run: Run): Flag[] {
 
   Logger.debug(`Calculating flags for ${run.id} (${run.category} star in ${formatDuration(run.time)})`);
 
-  const flags = FLAGS.reduce<Flag[]>((acc, flag) => {
-    if (flag.check(run)) {
-      acc.push(flag);
+  const flags = [];
+  for (const flag of FLAGS) {
+    if (await flag.check(run)) {
+      flags.push(flag);
     }
-    return acc;
-  }, []);
+  }
 
   Logger.debug(`${flags.length} flags found for ${run.id}`);
 
