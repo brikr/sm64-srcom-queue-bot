@@ -19,4 +19,12 @@ export const BANLIST = [
   'caticidespeedruns', // Reason: spam https://www.speedrun.com/sm64/run/ywjnp5pz
   'TTVImATaxi', // Reason: spam https://www.speedrun.com/sm64/run/z0oj6v4z
   'Coachhy', // Reason: spam https://www.speedrun.com/sm64/run/z123d1ry
+  '_Tyler', //Reason: fake run  https://www.speedrun.com/sm64/run/z1p6r57z
+  'EaglesWaspEaglesWasp', //Reason: using a tas run as a submission https://www.speedrun.com/sm64/run/y9vrgprm 
+  'AppleSauceLover69', //Reason: spam run  https://www.speedrun.com/sm64/run/yl19j7nm
+  'loadingcracker', //Reason fake run https://www.speedrun.com/sm64/run/y6x74p1y
+  'GustavoGameNeri', //Reason spam run https://www.speedrun.com/sm64/run/m7x852ey 
+  'InsertCoolUsername', //Reason used someone else's run  https://www.speedrun.com/sm64/run/z0l72poz 
+  'kingcatf', //Reason spam run https://www.speedrun.com/sm64/run/yv00086z
+  'porics', //Reason faking emu as n64 in stage rta submissions after being told to stop https://www.speedrun.com/sm64/run/yjdep2oy
 ];
