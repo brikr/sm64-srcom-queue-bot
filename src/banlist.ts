@@ -27,4 +27,20 @@ export const BANLIST = [
   'InsertCoolUsername', // Reason used someone else's run  https://www.speedrun.com/sm64/run/z0l72poz
   'kingcatf', // Reason spam run https://www.speedrun.com/sm64/run/yv00086z
   'porics', // Reason faking emu as n64 in stage rta submissions after being told to stop https://www.speedrun.com/sm64/run/yjdep2oy
+  'DreweySR', // Reason runner is banned from community spaces
+  'IGoSpeed', // Reason spam https://www.speedrun.com/sm64/run/yl15xerm
+  'mikekawozaki', // Reason spam https://www.speedrun.com/sm64/run/znq6863z
+  '2333333', // Reason submitted tas https://www.speedrun.com/sm64/run/mkv4223y
+  'balltickler69', // Reason spam https://www.speedrun.com/sm64/run/yj8w533m
+  'robotnik111', // Reason spam https://www.speedrun.com/sm64/run/yolok01y
+  'LouiseWoolston', // Reason spam https://www.speedrun.com/sm64/run/z5ek30nz
+  'Pistachio007', // Reason spam https://www.speedrun.com/sm64/run/y2jkkj9z
+  'Count_Doodoo', // Reason spam original run deleted
+  'Bobgeed69', // Reason spam original run deleted
+  'xestna_w1', // Reason spam https://www.speedrun.com/sm64/run/zg2o1x0y
+  'GamerJ', // Reason spam https://www.speedrun.com/sm64/run/y80l04nm
+  'Hiiiii', // Reason spam https://www.speedrun.com/sm64/run/yolgjnjy
+  'TheFartman', // Reason spam https://www.speedrun.com/sm64/run/z0n4l08m
+  'Jaxonjones63636', // Reason spam https://www.speedrun.com/sm64/run/yv8ngn4m
+  'Ilikebugs', // Reason spam https://www.speedrun.com/sm64/run/znjdjglm
 ];
