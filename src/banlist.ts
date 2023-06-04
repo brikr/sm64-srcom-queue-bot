@@ -44,4 +44,5 @@ export const BANLIST = [
   'Jaxonjones63636', // Reason spam https://www.speedrun.com/sm64/run/yv8ngn4m
   'Ilikebugs', // Reason spam https://www.speedrun.com/sm64/run/znjdjglm
   'Kyrpox', // Reason: submitting other people's runs (eg. https://www.speedrun.com/sm64/run/y62r811z)
+  'Sussybaka69', // Reason spam: https://www.speedrun.com/sm64/run/zgexq1dy
 ];
