@@ -69,6 +69,8 @@ export const FLAGS: Flag[] = [
         '120': moment.duration({hours: 1, minutes: 50}).asMilliseconds(),
         '70': moment.duration({minutes: 51}).asMilliseconds(),
         '16': moment.duration({minutes: 16}).asMilliseconds(),
+        '1': moment.duration({minutes: 7, seconds: 40}).asMilliseconds(),
+        '0': moment.duration({minutes: 7}).asMilliseconds(),
       };
 
       if (shoutoutTimes[run.category] === undefined) {
