@@ -44,4 +44,9 @@ export const BANLIST = [
   'Jaxonjones63636', // Reason spam https://www.speedrun.com/sm64/run/yv8ngn4m
   'Ilikebugs', // Reason spam https://www.speedrun.com/sm64/run/znjdjglm
   'Kyrpox', // Reason: submitting other people's runs (eg. https://www.speedrun.com/sm64/run/y62r811z)
+  'Kamronsection', // Reason: troll https://www.speedrun.com/sm64/run/mel9ed3z
+  'Sussybaka69', // Reason: troll https://www.speedrun.com/sm64/run/zgexq1dy
+  'GamerxGBXX', // Reason: troll https://www.speedrun.com/sm64/run/ywrqdd9m
+  'DeathGamer1001', // Reason: troll https://www.speedrun.com/sm64/run/zx38d6qz
+  'DT_Ryan', // Reason: submitting TAS as RTA https://www.speedrun.com/sm64/run/yj28endm
 ];
