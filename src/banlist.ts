@@ -52,4 +52,7 @@ export const BANLIST = [
   'coolknight', // Reason: submitting other people's runs https://www.speedrun.com/sm64/runs/y2g2vx9z
   'GavinPlaysGames', // Reason: troll submissions https://www.speedrun.com/sm64/runs/zx3qdxgz
   'TTV_CRITICALPLAYZ', // Reason: submitted tas https://www.speedrun.com/sm64/runs/znv2r37m
+  'plump', // Reason: https://www.speedrun.com/sm64/runs/znv9j38m
+  'fallguys', // Reason: https://www.speedrun.com/sm64/runs/yvpnlq4y
+  'EmbSpeedRuns', // Reason: https://www.speedrun.com/sm64ce/runs/y2gwdp7z
 ];
