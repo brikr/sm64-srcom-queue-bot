@@ -58,4 +58,5 @@ export const BANLIST = [
   'ToastyPopcorn', // Reason: submitting someone else's run: https://www.speedrun.com/sm64/runs/ydj7n1vy
   'FernandoBattagion', // Reason: https://www.speedrun.com/sm64/runs/mk0xrjlz
   'SuperLuigi63', // Reason: https://www.speedrun.com/sm64/runs/yone055z
+  'ewi000', // Reason: submitted run with discriminatory language spoken
 ];
