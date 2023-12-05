@@ -10,7 +10,7 @@ export const BANLIST = [
   'Match28', // Reason: fake run https://www.speedrun.com/sm64/run/zn7qjo8m
   'smallchild29073821', // Reason: fake run https://www.speedrun.com/sm64/run/yjxeq53z
   'nomombon', // Reason: fake run https://www.speedrun.com/sm64/run/z12v00wy
-  'edorb', // Reason: used someone else's run https://www.speedrun.com/sm64/run/ywj5nvnz
+  'St0ft', // Reason: used someone else's run https://www.speedrun.com/sm64/run/ywj5nvnz
   'snappyturtle111', // Reason: spam run https://www.speedrun.com/sm64/run/zxl1dwqz
   'superspeedrun64', // Reason: used someone else's run https://www.speedrun.com/sm64/run/yopp130m
   'DreamGamer420', // Reason: fake run https://www.speedrun.com/sm64/run/y6nk4pjz
@@ -20,11 +20,10 @@ export const BANLIST = [
   'TTVImATaxi', // Reason: spam https://www.speedrun.com/sm64/run/z0oj6v4z
   'Coachhy', // Reason: spam https://www.speedrun.com/sm64/run/z123d1ry
   '_Tyler', // Reason: fake run  https://www.speedrun.com/sm64/run/z1p6r57z
-  'EaglesWaspEaglesWasp', // Reason: using a tas run as a submission https://www.speedrun.com/sm64/run/y9vrgprm
   'AppleSauceLover69', // Reason: spam run  https://www.speedrun.com/sm64/run/yl19j7nm
   'loadingcracker', // Reason fake run https://www.speedrun.com/sm64/run/y6x74p1y
   'GustavoGameNeri', // Reason spam run https://www.speedrun.com/sm64/run/m7x852ey
-  'InsertCoolUsername', // Reason used someone else's run  https://www.speedrun.com/sm64/run/z0l72poz
+  'InsertCoolUsername', // Reason used someone else's run (link since deleted)
   'kingcatf', // Reason spam run https://www.speedrun.com/sm64/run/yv00086z
   'porics', // Reason faking emu as n64 in stage rta submissions after being told to stop https://www.speedrun.com/sm64/run/yjdep2oy
   'DreweySR', // Reason runner is banned from community spaces
@@ -43,11 +42,9 @@ export const BANLIST = [
   'TheFartman', // Reason spam https://www.speedrun.com/sm64/run/z0n4l08m
   'Jaxonjones63636', // Reason spam https://www.speedrun.com/sm64/run/yv8ngn4m
   'Ilikebugs', // Reason spam https://www.speedrun.com/sm64/run/znjdjglm
-  'Kyrpox', // Reason: submitting other people's runs (eg. https://www.speedrun.com/sm64/run/y62r811z)
   'Kamronsection', // Reason: troll https://www.speedrun.com/sm64/run/mel9ed3z
   'Sussybaka69', // Reason: troll https://www.speedrun.com/sm64/run/zgexq1dy
   'GamerxGBXX', // Reason: troll https://www.speedrun.com/sm64/run/ywrqdd9m
-  'DeathGamer1001', // Reason: troll https://www.speedrun.com/sm64/run/zx38d6qz
   'DT_Ryan', // Reason: submitting TAS as RTA https://www.speedrun.com/sm64/run/yj28endm
   'coolknight', // Reason: submitting other people's runs https://www.speedrun.com/sm64/runs/y2g2vx9z
   'GavinPlaysGames', // Reason: troll submissions https://www.speedrun.com/sm64/runs/zx3qdxgz
@@ -55,7 +52,15 @@ export const BANLIST = [
   'plump', // Reason: https://www.speedrun.com/sm64/runs/znv9j38m
   'fallguys', // Reason: https://www.speedrun.com/sm64/runs/yvpnlq4y
   'EmbSpeedRuns', // Reason: https://www.speedrun.com/sm64ce/runs/y2gwdp7z
-  'ToastyPopcorn', // Reason: submitting someone else's run: https://www.speedrun.com/sm64/runs/ydj7n1vy
+  'ToastyPopcorn', // (user since changed name) https://www.speedrun.com/sm64/runs/ydj7n1vy
   'FernandoBattagion', // Reason: https://www.speedrun.com/sm64/runs/mk0xrjlz
   'SuperLuigi63', // Reason: https://www.speedrun.com/sm64/runs/yone055z
+  'Renhao', // Reason: (stolen vod) https://www.speedrun.com/sm64/runs/zqd3op1m
+  'bubblezcavanagh', // Reason: https://www.speedrun.com/sm64/runs/yvv3v7ey
+  'MaricelCalabano', // Reason: https://www.speedrun.com/sm64/runs/z1koel7y
+  'RutendoGumbo', // Reason: https://www.speedrun.com/sm64/runs/ywn0qx0y
+  'JustArandomTASer', // Reason: https://www.speedrun.com/sm64/runs/y6qd8wjz
+  'Luke_desenhando', // Reason: https://www.speedrun.com/sm64/runs/yjwp6wdm
+  'Kyreeeepower', // Reason: https://www.speedrun.com/sm64/runs/yoodenjy
+  'imglower', // Reason: banned from community spaces
 ];
