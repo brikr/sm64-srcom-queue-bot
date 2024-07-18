@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import {URL} from 'url';
 import {formatDuration} from './util';
 import {Run} from './srcom';
 import {Logger} from './logger';
@@ -13,7 +14,8 @@ type FlagCode =
   | 'BAD_VERIFIED'
   | 'NO_REGION'
   | 'BANNED_RUNNER'
-  | 'TWITCH_PAST_BROADCAST';
+  | 'TWITCH_PAST_BROADCAST'
+  | 'UNACCEPTED_VIDEO_SITE';
 
 export interface Flag {
   code: FlagCode;
@@ -169,6 +171,28 @@ export const FLAGS: Flag[] = [
     reject: true,
     rejectMessage:
       'Twitch past broadcasts are not allowed as they are deleted over time. Please highlight the run instead.',
+  },
+  {
+    code: 'UNACCEPTED_VIDEO_SITE',
+    index: 7,
+    title: 'Unaccepted video upload site',
+    check: run => {
+      const allowedHosts = ['youtube.com', 'youtu.be', 'twitch.tv', 'nicovideo.jp', 'bilibili.com', 'bilibili.tv'];
+
+      for (const video of run.videos) {
+        const url = new URL(video);
+        // checking if video host ends with allowed host to allow for subdomains
+        if (!allowedHosts.find(host => url.host.endsWith(host))) {
+          // this video is bad
+          return true;
+        }
+      }
+
+      // No weird sites detected
+      return false;
+    },
+    reject: true,
+    rejectMessage: 'Run must be uploaded to a well-known video upload site (e.g. YouTube or Twitch)',
   },
 ];
 
