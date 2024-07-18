@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/brikr/sm64-srcom-queue-bot#readme",
   "engines": {
-    "node": "12.x.x"
+    "node": "20.x.x"
   },
   "scripts": {
     "start": "node build/index.js",
