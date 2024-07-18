@@ -63,4 +63,26 @@ export const BANLIST = [
   'Luke_desenhando', // Reason: https://www.speedrun.com/sm64/runs/yjwp6wdm
   'Kyreeeepower', // Reason: https://www.speedrun.com/sm64/runs/yoodenjy
   'imglower', // Reason: banned from community spaces
+  'pabloO', // Reason: https://www.speedrun.com/sm64/runs/zxwqq3qm
+  'NoelSheard', // Reason: https://www.speedrun.com/sm64/runs/yvvnlo4y
+  'RhyRhy12', // Reason: https://www.speedrun.com/sm64/runs/zqd5w1rm
+  'toelicker', // Reason: https://www.speedrun.com/sm64/runs/mkqrd8vm
+  'Adamalalei', // Reason: https://www.speedrun.com/sm64/runs/ywnow5ny
+  'Jackamoosplayz', // Reason: https://www.speedrun.com/sm64/runs/zppvejxz
+  'Ruggosssss', // Reason: https://www.speedrun.com/sm64/runs/z1k4k3ry
+  '1000tobeatrecord', // Reason: https://www.speedrun.com/sm64/runs/mrvjjo2z
+  'asdasdasdasdas', // Reason: https://www.speedrun.com/sm64/runs/zp6n0w8m
+  'achqee', // Reason: https://www.speedrun.com/sm64/runs/m7336r5y
+  'Goofygoober46', // Reason: https://www.speedrun.com/sm64/runs/yld42g2m
+  'Maxpro12080', // Reason: https://www.speedrun.com/sm64/runs/y6vdw8qm
+  'supergoku4evr', // Reason: https://www.speedrun.com/sm64/runs/mrvnn22z
+  'MumboJumbo', // Reason: https://www.speedrun.com/sm64/runs/zq88r9rz
+  'theow12', // Reason: https://www.speedrun.com/sm64/runs/y6vv59pm
+  'Fynn2424242112342', // Reason: https://www.speedrun.com/sm64/runs/ywgron9z
+  'mikoshi2014', // Reason: https://www.speedrun.com/sm64/runs/yldx7vkm
+  'MinJae', // Reason: https://www.speedrun.com/sm64/runs/yldpevkm
+  'CapitalAlexeyMaster64', // Reason: https://www.speedrun.com/sm64/runs/z19690wm
+  'ttt333', // Reason: https://www.speedrun.com/sm64/runs/y6v8p3pm
+  'JavierMartinez', // Reason: https://www.speedrun.com/sm64/runs/y8p3ro5z
+  'Mayo8492', // Reason: https://www.speedrun.com/sm64/runs/y9dow0nm
 ];
