@@ -85,4 +85,7 @@ export const BANLIST = [
   'ttt333', // Reason: https://www.speedrun.com/sm64/runs/y6v8p3pm
   'JavierMartinez', // Reason: https://www.speedrun.com/sm64/runs/y8p3ro5z
   'Mayo8492', // Reason: https://www.speedrun.com/sm64/runs/y9dow0nm
+  'faxycrazy', // Reason: first submission was spliced run (search name in #srcom channel)
+  'danielwr', // Reason: spam https://www.speedrun.com/sm64/runs/ylx7lkxy
+  'JacobWestcott', // Reason: spam https://www.speedrun.com/sm64/runs/zpx3n9gm
 ];
