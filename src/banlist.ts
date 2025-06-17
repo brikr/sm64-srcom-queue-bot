@@ -88,4 +88,5 @@ export const BANLIST = [
   'faxycrazy', // Reason: first submission was spliced run (search name in #srcom channel)
   'danielwr', // Reason: spam https://www.speedrun.com/sm64/runs/ylx7lkxy
   'JacobWestcott', // Reason: spam https://www.speedrun.com/sm64/runs/zpx3n9gm
+  'Culinatore', // Reason: submitted old kanno run https://www.speedrun.com/sm64/runs/yv7onooy
 ];
